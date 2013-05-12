@@ -17,7 +17,7 @@ public class MainGarden {
 //        Product p = ProductUtils.grabProductFromIKEA(pid);
 //        ProductUtils.addToSQL(p);  }
 ////////////////////////更新product表内全部产品/////////////////////////
-        Product p = ProductUtils.grabProductFromIKEA("70176388");
+        Product p = ProductUtils.grabProductFromIKEA("70176378");
         ProductUtils.addToSQL(p);
 ////////////////////////////////////////////////////////////////////
 //        System.out.println(p.itemsList.get(0).colorCode + "!" + p.setDescription());
