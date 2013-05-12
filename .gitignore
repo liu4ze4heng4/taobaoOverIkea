@@ -1,6 +1,5 @@
 *.class
 # Package Files #
-*.jar
 *.war
 *.ear
 /target/
@@ -11,3 +10,4 @@
 *.settings
 *.tmp
 *.iml
+.project
