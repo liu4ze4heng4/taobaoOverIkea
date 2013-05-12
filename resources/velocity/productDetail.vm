@@ -1,0 +1,13 @@
+$itemList.get(0).facts
+$itemList.get(0).price
+           $itemList.get(0).assembledSize
+            $itemList.get(0).designer
+           $itemList.get(0).environment
+            $itemList.get(0).goodToKnow
+            $itemList.get(0).careInst
+            $itemList.get(0).custBenefit
+            $itemList.get(0).custMaterials
+$itemList.get(0).facts
+$itemList.get(0).type
+$itemList.get(0).getColorCode()
+
