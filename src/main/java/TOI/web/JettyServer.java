@@ -20,19 +20,17 @@ import java.util.List;
  * Created with IntelliJ IDEA.
  * User: W.k
  * Date: 13-5-12
- * Time: 上午12:14
+ * Time: 12:14
  * To change this template use File | Settings | File Templates.
  */
 public class JettyServer {
 
    public static void main(String[] args){
-       // 创建Jetty HttpServer对象
        Server server = new Server();
        server.setThreadPool(createThreadPool());
         server.addConnector(createConnector());
        server.setHandler(createHandlers());
        server.setStopAtShutdown(true);
-        // 启动服务器
        try {
            server.start();
        } catch (Exception e) {
@@ -52,7 +50,7 @@ public class JettyServer {
 
     private static SelectChannelConnector createConnector() {
         SelectChannelConnector connector = new SelectChannelConnector();
-        connector.setPort(8081);
+        connector.setPort(8014);
         connector.setHost("127.0.0.1");
         connector.setAcceptors(4);
         connector.setForwarded(true);
@@ -87,8 +85,8 @@ public class JettyServer {
             _ctx.setWar(getShadedWarUrl());
             _ctx2.setWar(getShadedWarUrl());
         } else {
-            _ctx.setWar("TOI/web");
-            _ctx2.setWar("TOI/web");
+            _ctx.setWar("src/main/webapp");
+            _ctx2.setWar("src/main/webapp");
         }
 
         List<Handler> _handlers = new ArrayList<Handler>();
