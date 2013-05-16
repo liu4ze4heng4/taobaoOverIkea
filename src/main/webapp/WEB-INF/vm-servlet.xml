@@ -29,7 +29,7 @@
     </bean>
 
     <bean id="velocityConfig" class="org.springframework.web.servlet.view.velocity.VelocityConfigurer">
-        <property name="resourceLoaderPath" value="/WEB-INF/vm/"/>
+        <property name="resourceLoaderPath" value="resources/velocity/"/>
         <property name="configLocation" value="/WEB-INF/velocity.properties"/>
     </bean>
 

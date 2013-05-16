@@ -48,7 +48,7 @@ public class JettyServer {
 	private static SelectChannelConnector createConnector() {
 		SelectChannelConnector connector = new SelectChannelConnector();
 		connector.setPort(8014);
-		connector.setHost("127.0.0.1");
+		connector.setHost("localhost");
 		connector.setForwarded(true);
 		connector.setReuseAddress(true);
 		connector.setAcceptors(4);
