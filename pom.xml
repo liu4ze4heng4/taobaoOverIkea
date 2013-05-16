@@ -21,10 +21,14 @@
 			<artifactId>mysql-connector-java</artifactId>
 			<version>5.1.21</version>
 		</dependency>
-
-		<!-- <dependency> <groupId>com.ganshane.specs</groupId> <artifactId>taobao-sdk</artifactId> 
-			<version>20120515</version> </dependency> -->
-
+		
+		 <dependency>
+        	<groupId>com.ganshane.specs</groupId>
+			<artifactId>taobao-sdk</artifactId>
+			<version>1.0</version>
+        	<scope>system</scope>
+        	<systemPath>${basedir}/mylib/taobao-sdk-java-online_standard-20130409.jar</systemPath>
+        </dependency>
 
 		<dependency>
 			<groupId>org.apache.velocity</groupId>
@@ -35,6 +39,12 @@
 			<groupId>org.apache.velocity</groupId>
 			<artifactId>velocity-tools</artifactId>
 			<version>2.0</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>servlet-api</artifactId>
+					<groupId>javax.servlet</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>commons-collections</groupId>
@@ -46,6 +56,13 @@
 			<artifactId>json</artifactId>
 			<version>20090211</version>
 		</dependency>
+		
+		<dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>1.2.2</version>
+        </dependency>
+		
 		<!-- JETTY DEPENDENCIES -->
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
@@ -73,11 +90,18 @@
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-jsp</artifactId>
             <version>${jetty.jsp.version}</version>
+            <exclusions>
+            	<exclusion>
+            		<artifactId>javax.servlet</artifactId>
+            		<groupId>org.eclipse.jetty.orbit</groupId>
+            	</exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>jstl</artifactId>
             <version>1.2</version>
+            <scope>provided</scope>
         </dependency>
 
 

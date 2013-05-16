@@ -8,13 +8,11 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 
 
-    <context:component-scan base-package="com.wap.sohu.mobilepaper.web">
+    <context:component-scan base-package="TOI.web.controller">
         <context:include-filter type="regex" expression=".*Controller"/>
     </context:component-scan>
 
     <mvc:annotation-driven/>
-
-    <!--<mvc:resources mapping="/i/**" location="WEB-INF/images/" />-->
 
     <bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping"/>
     <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter"/>
