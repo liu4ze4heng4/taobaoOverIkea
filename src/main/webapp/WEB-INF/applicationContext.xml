@@ -10,6 +10,10 @@
     <context:annotation-config/>
     <!-- Activates scanning of @Repository and @Service -->
     <context:component-scan base-package="TOI.web"/>
+    
+    <bean id="urlMapping"
+          class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+    </bean>
 
 
 </beans>
