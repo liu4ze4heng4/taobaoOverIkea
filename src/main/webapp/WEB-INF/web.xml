@@ -51,48 +51,29 @@
         <servlet-name>welcome</servlet-name>
         <url-pattern>/welcome.do</url-pattern>
     </servlet-mapping>
-
+    
 	<servlet>
-		<servlet-name>SpringMVCDispatcherServlet</servlet-name>
+		<servlet-name>springDispatcher</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 		<init-param>
 			<param-name>contextConfigLocation</param-name>
-			<param-value>/WEB-INF/jsp-servlet.xml</param-value>
+			<param-value>/WEB-INF/spring-dispatch-servlet.xml</param-value>
 		</init-param>
-		<load-on-startup>2</load-on-startup>
-	</servlet>
-
-	<servlet-mapping>
-		<servlet-name>SpringMVCDispatcherServlet</servlet-name>
-		<url-pattern>*.go</url-pattern>
-	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>SpringMVCDispatcherServlet</servlet-name>
-		<url-pattern>*.rss</url-pattern>
-	</servlet-mapping>
-
-	<servlet id="jsp">
-		<servlet-name>jsp</servlet-name>
-		<servlet-class>org.apache.jasper.servlet.JspServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 	
-	<!-- Spring MVC 的Servlet，它将加载WEB-INF/vm-servlet.xml 配置文件 -->
-	<servlet>
-		<servlet-name>vm</servlet-name>
-		<servlet-class>
-			org.springframework.web.servlet.DispatcherServlet
-        </servlet-class>
-		<load-on-startup>3</load-on-startup>
-	</servlet>
-
 	<servlet-mapping>
-		<servlet-name>vm</servlet-name>
-		<url-pattern>/vm/*.do</url-pattern>
+		<servlet-name>springDispatcher</servlet-name>		
+		<url-pattern>*.do</url-pattern>
 	</servlet-mapping>
 
-	<session-config>
-		<session-timeout>300000</session-timeout>
-	</session-config>
+	
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+	</welcome-file-list>
 
+	<session-config>
+	 <session-timeout>10</session-timeout>
+	</session-config>
+	
 </web-app>
