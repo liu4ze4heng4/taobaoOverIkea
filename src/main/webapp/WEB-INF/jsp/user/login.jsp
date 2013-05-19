@@ -7,7 +7,7 @@
 <title>用户登录</title>
 </head>
 <body>
-	<%-- <%@ include file="/WEB-INF/jsp/common/head.jsp"%> --%>
+	<%@ include file="/WEB-INF/jsp/common/head.jsp"%>
 	<div id="box">
 		<div id="mid">
 			<div id="denglu">
@@ -27,8 +27,8 @@
 						<tr>
 							<td height="24" colspan="2" align="center"><submit
 									value="登　录" type="image"
-									src="%{context_path}/css/images/dl_06.gif" /> <a href="http://www.baidu.com"> <img
-									src="${context_path}/css/images/dl_08.gif" width="68"
+									src="<%=request.getContextPath()%>/webapp/WEB-INF/css/images/dl_06.gif" /> <a href="http://www.baidu.com"> <img
+									src="<%=request.getContextPath()%>/webapp/WEB-INF/css/images/dl_08.gif" width="68"
 									height="24" />
 							</a></td>
 						</tr>
