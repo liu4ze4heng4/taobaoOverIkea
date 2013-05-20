@@ -15,7 +15,7 @@
 					<table width="100%" height="94" border="0" cellpadding="0"
 						cellspacing="0">
 						<tr>
-							<td width="70" height="35" align="right">会员名：</td>
+							<td width="70" height="35" align="right">会员名21111：</td>
 							<td width="121" align="left"><input name="username"
 									class="bian" size="18"></input></td>
 						</tr>
