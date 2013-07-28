@@ -1,0 +1,36 @@
+<html xmlns=http://www.w3.org/1999/xhtml><head><meta http-equiv=Content-Type content="text/html;charset=utf-8">
+<style type="text/css">
+.main{
+}
+.table,.table td{
+	font-size: 12px;
+    text-align: center;
+    line-height: 24px;
+	border:1px solid #cccccc;
+    border-collapse:collapse;
+}
+
+</style>
+
+<div class="main">
+<table width="750" border="0" class="table">
+<tr>
+    <th>No</th>
+    <th>ID&NAME</th>
+	<th>TYPE</th>
+	<th>QUANTITY</th>
+	<th>STOCKINFO</th>
+</tr>
+#foreach( $tradeItem in $tradeItemList)
+<tr>
+    <td>$velocityCount</td>
+        <td>${tradeItem.getId()}<br/>${tradeItem.getName()}-${tradeItem.getFacts()}</td>
+		<td>${tradeItem.getType()}</td>
+		<td>${tradeItem.getQuantity()}</td>
+			<td>库存：${tradeItem.getTotal()}<br>${tradeItem.getStockInfo()}</td>
+
+</tr>
+#end
+
+</table>
+</html>

@@ -15,24 +15,42 @@ public class MainGarden {
 //        List<String> pids = ProductUtils.setProductListFromSQL();
 //        for (String pid:pids){
 //        Product p = ProductUtils.grabProductFromIKEA(pid);
-//        ProductUtils.addToSQL(p);  }
-////////////////////////更新product表内全部产品/////////////////////////
-        Product p = ProductUtils.grabProductFromIKEA("70176378");
-        ProductUtils.addToSQL(p);
-////////////////////////////////////////////////////////////////////
-//        System.out.println(p.itemsList.get(0).colorCode + "!" + p.setDescription());
+//        ProductUtils.addToSQL(p,1);  }
+ ////////////////////////更新item表内全部产品库存/////////////////////////
+//        List<String> pids = ItemUtils.setItemListFromSQL();
+//        for (String pid:pids){
+//            IkeaStockUtil.StockInfo2SQL(pid);}
+////////////////////////更新product表内一个产品/////////////////////////
+        Product p = ProductUtils.grabProductFromIKEA("60167681");
+        ProductUtils.addToSQL(p, 1);
+//////////////////////从SQL获取一个产品/////////////////////////
+//        Product p = ProductUtils.setFromSQL("60167681");
+////////////////////////上传至淘宝/////////////////////////
         TaobaoUtils.addTaobaoItem(p);
+        TaobaoUtils.uploadExtraPic(p);
+///////////////////////////////////////////////////////////////
 //       TaobaoUtils.saveTBcategory2File();
 //        TaobaoUtils.getPicCategory("宝贝图片");
 ////////////////////////删除未引用图片/////////////////////////
 //        for(int i=0;i<20;i++)
 //        TaobaoUtils.deleteUnusePics();
 //////////////////////更新线上宝贝/////////////////////////
-
-//        TaobaoUtils.updateOnlineItem("S49930925");
+//        TaobaoUtils.updateOnlineItem(p);
+//////////////////////全部更新线上////////////////////////
+//        List<String> pids = ProductUtils.setProductListFromSQL();
+//        for (String pid:pids){
+//            Product p = ProductUtils.setFromSQL(pid);
+//            TaobaoUtils.updateOnlineItem(p);
+//        }
 ////////////////////////获取线上宝贝/////////////////////////
 //        TaobaoUtils.getOnlineProducts();
+
+////////////////////////更新SQL内虚重/////////////////////////
+//        List<String> pids = ProductUtils.setProductListFromSQL();
+//        for (String pid:pids){
+//        Product p = ProductUtils.setFromSQL(pid);
+//         p.setVirtualWeight2();
+//            ProductUtils.addToSQL(p,0);
+//           }
     }
-
-
 }

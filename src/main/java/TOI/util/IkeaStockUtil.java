@@ -3,6 +3,7 @@ package TOI.util;
 import TOI.Constant.Constant;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -18,83 +19,105 @@ import java.util.regex.Pattern;
 public class IkeaStockUtil {
 
     public static String setBufA(String id) {
-        id = setId(id);
-        String bufA = new String();
+        String buf = null;
+        if(!id.contains("S")){
         try {
 
-            bufA = HtmlUtil.getHtmlContent("http://m.ikea" +
-                    ".com/cn/zh/store/availability/?storeCode=802&itemType=art&itemNo=" + id + "&change=true&_=1");
-            if (bufA == null)
-                bufA = HtmlUtil.getHtmlContent("http://m.ikea" +
-                        ".com/cn/zh/store/availability/?storeCode=802&itemType=spr&itemNo=" + id + "&change=true&_=1");
+            buf = HtmlUtil.getHtmlContent("http://m.ikea.com/cn/zh/store/availability/?storeCode=802&itemType=art&itemNo=" + id + "&change=true");
+
+
 
         } catch (IOException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.getMessage();  //To change body of catch statement use File | Settings | File Templates.
+            return  null;
         }
-        return bufA;
+        }
+        else{
+            try {
+            buf = HtmlUtil.getHtmlContent("http://m.ikea" +
+                    ".com/cn/zh/store/availability/?storeCode=802&itemType=spr&itemNo=" + id.replace("S",""
+                    ) + "&change=true");
+            } catch (IOException e) {
+                e.getMessage();  //To change body of catch statement use File | Settings | File Templates.
+                return null;
+            }
     }
+        return buf;}
 
     public static String setBufB(String id) {
-        id = setId(id);
-        String bufB = new String();
+        String bufB;
 
         try {
             bufB = HtmlUtil.getHtmlContent("http://www.ikea.com/cn/zh/catalog/packagepopup/" + id);
-            if (bufB == null)
-                bufB = HtmlUtil.getHtmlContent("http://www.ikea.com/cn/zh/catalog/packagepopup/S" + id);
         } catch (IOException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            bufB=null;
+            return bufB;//To change body of catch statement use File | Settings | File Templates.
         }
         return bufB;
     }
 
-    private static String setId(String id) {
-        return id.replace(".", "").replace("S", "");
-    }
+
 
     /**
      * 获取IKEA库存信息
      */
     public static String StockInfoCatcher(String id) {
-
-        ArrayList<Double> weight = new ArrayList<Double>();
-
-        ArrayList<Double> sizer = new ArrayList<Double>();
-//
-        id = id.replace(".", "").replace("S", "");
         String buf = setBufA(id);
+        if(buf!=null){
         String quantity = new String();
         int status = 0;  //无库存
-        if (buf.contains("北京商场当前有库存")) {
-            int beginIx = buf.indexOf("北京商场当前有库存");
+        String info=null;
+        if (buf.contains("有库存")) {
+            int beginIx = buf.indexOf("有库存");
             int endIx = buf.indexOf("</b>", beginIx);
-            quantity = buf.substring(beginIx + "北京商场当前有库存：".length(), endIx);
+            quantity = buf.substring(beginIx + "有库存：".length(), endIx);
             quantity = quantity.replace("<b>", "").replace(" ", "");
 
             if (buf.contains("联系工作人员")) {
+                info="外仓";
                 status = 2;  //外仓
-            } else {
+            }
+            else if(buf.contains("相关区域")){
+                info="在家居用品区";
+                status = 3;  //在家居用品区
+            }
+            else if(buf.contains("")) {
+                beginIx = buf.indexOf("location-left");
+                endIx = buf.indexOf("</div>", beginIx);
+                String huojia = buf.substring(beginIx + "location-left".length()+2, endIx);
+                beginIx=buf.indexOf("ikea-location-location",buf.indexOf("location-left"));
+                endIx = buf.indexOf("</div>", beginIx);
+                String weizhi=buf.substring(beginIx + "ikea-location-location".length()+2, endIx);
+
+                info=huojia+"@!@"+weizhi;
                 status = 1; //可以发货
             }
 
-        } else if (buf.contains("北京商场当前无库存")) {
+        } else if (buf.contains("无库存")) {
+            info="无库存";
             quantity = "0";
             status = 0;     //无库存
-        } else if (buf.contains("北京商场不出售该产品")) {
+        } else if (buf.contains("不出售该产品")) {
+            info="不出售该产品";
             quantity = "0";
             status = -1;     //不再售
-        } else
+        } else {
 
             quantity = "0";
         status = -2;     //出错
-        return quantity + Constant.split + status;
+        }
+        return quantity + Constant.split + status+Constant.split + info;
+        }
+        else
+            return "0"+Constant.split + "-2"+Constant.split + "无网页";
     }
 
-    public static double WeightCatcher(String id) {
+    public static String WeightCatcher(String id) {
         double wholeweight = 0;
 
-        id = setId(id);
         String buf2 = setBufB(id);
+        if (buf2==null)
+            buf2 = setBufB("S"+id);
         List<Double> weight = new ArrayList<Double>();
         String regexStr = "<div class=\"rowContainerPackage\">[\\s\\S]*?<div class=\"clear\"></div>";
         Pattern productCell = Pattern.compile(regexStr);
@@ -109,22 +132,25 @@ public class IkeaStockUtil {
 
             beginIx = content.indexOf("<div class=\"colWeight\">");
             endIx = content.indexOf("</div>", beginIx);
-            weight.add(count * new Double(content.substring(beginIx + "<div class=\"colWeight\">".length(),
-                    endIx).replace("	", "").replace("千克", "").replace("&nbsp;", "9999")));
+            String tmp=content.substring(beginIx + "<div class=\"colWeight\">".length(),
+                    endIx);
+            weight.add(count * new Double(tmp.replace("	", "").replace("千克", "").replace("&nbsp;", "0")));
 
 
         }
-        if (!weight.contains(9999)) {
+        if (!weight.contains(0)) {
             for (int i = 0; i < weight.size(); i++)
                 wholeweight = wholeweight + weight.get(i);
-            return wholeweight;
-        } else return -1;
+            DecimalFormat df=new DecimalFormat(".##");
+            String stringWeight=df.format(wholeweight);
+            System.out.println(stringWeight);
+            return stringWeight;
+        } else return "-1";
     }
 
 
 
     public static double SizeCatcher(String id) {
-        id = setId(id);
         String buf2 = setBufB(id);
         double wholesize = 0;
         List<Double> sizer = new ArrayList<Double>();
@@ -159,5 +185,14 @@ public class IkeaStockUtil {
             return wholesize;
         } else return -1;
 }
+    public static  void StockInfo2SQL(String id){
+        String[] result=IkeaStockUtil.StockInfoCatcher(id).split(Constant.split);
+         ItemUtils.updateSingleValue(id,"quantity",result[0]);
+         ItemUtils.updateSingleValue(id,"stockType",result[1]);
+
+    }
+      public static  void main(String[] args){
+          System.out.println(IkeaStockUtil.StockInfoCatcher("70227707"));
+      }
 
 }

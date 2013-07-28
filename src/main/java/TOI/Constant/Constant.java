@@ -16,5 +16,14 @@ public class Constant {
     public static String appkey = "21402582";
     public static String appSecret = "daf18bbfd74783b446f989f72f07de87";
     public static String nick = "charick";
-    public static String sessionKey="6102815b0709a34ddca0b9c1b13e84e55dccb1adee34c1442635718";
+    public static String sessionKey="6101d30ab4707117b9eb2e4548d438fded62ef110cb30d942635718";
+    public static String vm="productDetail.vm";
+    public static String product_sql="product_charick";
+    public static String item_sql="item_charick";
+
+//    public static String nick = "zhangtiqiu5673881";
+//    public static String sessionKey="6101b06e8d25b4178afad5d83c0855424a602147e1b08bc183118826";
+//    public static String vm="zhangtiqiu.vm";
+//    public static String product_sql="product_zhangtiqiu";
+//    public static String item_sql="item_zhangtiqiu";
 }
