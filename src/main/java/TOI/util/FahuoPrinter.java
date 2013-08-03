@@ -30,6 +30,7 @@ public class FahuoPrinter
                     String picUrl = rs.getString("picUrls");
                     tradeItem.picUrl = picUrl.split(",")[0];
                     tradeItem.type = rs.getString("type");
+                    tradeItem.price= rs.getString("price");
                 }
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();

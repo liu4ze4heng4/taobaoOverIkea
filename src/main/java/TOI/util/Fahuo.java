@@ -16,21 +16,21 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class Fahuo {
-    public static List<Trade> TradeFilter(String start, String end) {
+    public static ArrayList<Trade> TradeFilter(String start, String end) {
         try {
             TaobaoClient client = new DefaultTaobaoClient(Constant.url, Constant.appkey, Constant.appSecret);
             TradesSoldGetRequest req = new TradesSoldGetRequest();
             req.setFields("tid,seller_flag,buyer_nick,receiver_mobile,receiver_name");
-            Date dateTime = SimpleDateFormat.getDateTimeInstance().parse(start + " 00:00:00");
+            Date dateTime = SimpleDateFormat.getDateTimeInstance().parse(start);
             req.setStartCreated(dateTime);
-            Date dateTime2 = SimpleDateFormat.getDateTimeInstance().parse(end + " 23:59:59");
+            Date dateTime2 = SimpleDateFormat.getDateTimeInstance().parse(end);
             req.setEndCreated(dateTime2);
             req.setStatus("WAIT_SELLER_SEND_GOODS");
-//            req.setBuyerNick("gaojia923");
+//            req.setBuyerNick("tb749866_2012");
 
             TradesSoldGetResponse response = client.execute(req, Constant.sessionKey);
             List<Trade> trades = response.getTrades();
-            List<Trade> tradeList = new ArrayList<Trade>();
+            ArrayList<Trade> tradeList = new ArrayList<Trade>();
 
             for (Trade trade : trades) {
                 if (trade.getSellerFlag() == 1) {
@@ -140,7 +140,7 @@ public class Fahuo {
     }
 
     public static void main(String[] args) {
-        List<Trade> tradeList = TradeFilter("2013-07-01", "2013-07-27");
+        ArrayList<Trade> tradeList = TradeFilter("2013-07-24  00:00:00", "2013-08-02  23:59:59");
         List<TradeItem> tradeItems = generateTradeItems(tradeList);
         List<TradeItem> tradeItemList = FahuoPrinter.enrichTradeItem(tradeItems);
         FahuoPrinter.LetsPrint(tradeItemList);

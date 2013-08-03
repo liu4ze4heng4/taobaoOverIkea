@@ -10,7 +10,10 @@ import java.io.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Created with IntelliJ IDEA.
@@ -48,7 +51,7 @@ public class InvoicePrinter {
         for (String buyer : buyerSet) {
             List<Trade> trade1buyer = new ArrayList<Trade>();
             for (Trade trade : tradeList) {
-                if (trade.getBuyerNick() == buyer)
+                if (trade.getBuyerNick().equals(buyer))
                     trade1buyer.add(trade);
             }
             invoiceList.add(generateSingleInvoice(trade1buyer));
@@ -112,9 +115,10 @@ public static List<TradeItem> enrichTradeItem(List<TradeItem> tradeItems)
     return tradeItemList;
 }
     public static void main(String[] args){
-        List<Trade> tradeList = Fahuo.TradeFilter("2013-07-01", "2013-07-27");
+        ArrayList<Trade> tradeList = Fahuo.TradeFilter("2013-07-25  00:00:00", "2013-08-02  23:59:59");
         List<String> InvoiceList= generateInvoiceList(tradeList);
         printInvoice(InvoiceList);
+        System.out.println();
 
     }
 }
