@@ -115,7 +115,8 @@ public static List<TradeItem> enrichTradeItem(List<TradeItem> tradeItems)
     return tradeItemList;
 }
     public static void main(String[] args){
-        ArrayList<Trade> tradeList = Fahuo.TradeFilter("2013-07-25  00:00:00", "2013-08-02  23:59:59");
+        TaobaoUtils taobaoUtils=new TaobaoUtils("");
+        ArrayList<Trade> tradeList = taobaoUtils.tradeFilter("2013-07-25  00:00:00", "2013-08-30  23:59:59");
         List<String> InvoiceList= generateInvoiceList(tradeList);
         printInvoice(InvoiceList);
         System.out.println();

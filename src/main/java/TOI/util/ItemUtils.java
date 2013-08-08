@@ -133,8 +133,7 @@ public class ItemUtils
                 item.careInst = rs.getString("careInst");
                 item.custMaterials = rs.getString("custMaterials");
                 item.custBenefit = rs.getString("custBenefit");
-                String picUrl = rs.getString("picUrls");
-                Collections.addAll(item.picUrls, picUrl.split(","));
+               item.setPicUrls(rs.getString("picUrls"));
                 String picUrlAtTaobao = rs.getString("picUrlAtTaobao");
                 if(StringUtils.isNotBlank(picUrlAtTaobao))
                 Collections.addAll(item.picUrlsAtTaobao, picUrlAtTaobao.split(","));

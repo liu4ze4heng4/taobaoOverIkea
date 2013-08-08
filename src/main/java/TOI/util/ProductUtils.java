@@ -1,6 +1,7 @@
 package TOI.util;
 
 import TOI.Constant.Constant;
+import TOI.dao.DaoFactory;
 import TOI.model.Item;
 import TOI.model.Product;
 
@@ -9,16 +10,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class ProductUtils
-{
+public class ProductUtils {
     /**
      * 添加product到数据库
      */
-    public static void addProductToSQL(Product product)
-    {
+    public static void addProductToSQL(Product product) {
         String sql = "insert into " + Constant.product_sql + "(id,title,price,category," + "items,modifyTime,tid,isChanged,weight,virtualWeight) values(?,?,?,?,?,?,?,?,?,?)";
-        try
-        {
+        try {
             PreparedStatement stmt = SQLUtils.getConnection().prepareStatement(sql);
             stmt.setString(1, product.pid);
             stmt.setString(2, product.title);
@@ -34,8 +32,7 @@ public class ProductUtils
 
             stmt.execute();
             System.out.println(product.pid + "added!");
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             System.out.println("=========SQLException==========" + e.getMessage());
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
@@ -47,8 +44,7 @@ public class ProductUtils
         }
     }
 
-    public static int checkIsExist(Product product)
-    {
+    public static int checkIsExist(Product product) {
         int count = 0;
         try {
             String sql = "select * from  " + Constant.product_sql + " where items like '%" + product.pid + "%'";
@@ -65,14 +61,14 @@ public class ProductUtils
         } catch (ClassNotFoundException e) {
             System.out.println("========ClassNotFoundException===========" + e.getMessage());
             e.printStackTrace();
-        }return count;
+        }
+        return count;
     }
 
     /**
      * 更新一个product到数据库
      */
-    public static void updateProductToSQL(Product product)
-    {
+    public static void updateProductToSQL(Product product) {
         String ischange = "0";
         try {
             String sql = "select * from  " + Constant.product_sql + " where items like '%" + product.pid + "%'";
@@ -91,8 +87,7 @@ public class ProductUtils
                 if (rss.getString("category") == null) {
                     updateSingleValue(id, "category", product.subCategoryLocal);
                     ischange = "1";
-                }
-                else if ((!rss.getString("category").equals(product.subCategoryLocal)) && (product.subCategoryLocal != null)) {
+                } else if ((!rss.getString("category").equals(product.subCategoryLocal)) && (product.subCategoryLocal != null)) {
                     updateSingleValue(id, "category", product.subCategoryLocal);
                     ischange = "1";
                 }
@@ -103,8 +98,7 @@ public class ProductUtils
                 if (rss.getString("weight") == null) {
                     updateSingleValue(id, "weight", product.weight);
                     ischange = "1";
-                }
-                else if ((!rss.getString("weight").equals(product.weight)) && (product.weight != null)) {
+                } else if ((!rss.getString("weight").equals(product.weight)) && (product.weight != null)) {
                     updateSingleValue(id, "weight", product.weight);
                     ischange = "1";
                 }
@@ -112,8 +106,7 @@ public class ProductUtils
                 if (rss.getString("virtualWeight") == null) {
                     updateSingleValue(id, "virtualWeight", product.virtualWeight);
                     ischange = "1";
-                }
-                else if ((!rss.getString("virtualWeight").equals(product.virtualWeight)) && (product.virtualWeight != null)) {
+                } else if ((!rss.getString("virtualWeight").equals(product.virtualWeight)) && (product.virtualWeight != null)) {
                     updateSingleValue(id, "virtualWeight", product.virtualWeight);
                     ischange = "1";
                 }
@@ -169,14 +162,14 @@ public class ProductUtils
         } catch (ClassNotFoundException e) {
             System.out.println("========ClassNotFoundException===========" + e.getMessage());
             e.printStackTrace();
-        }return false;
+        }
+        return false;
     }
 
     /**
      * 更新一个product到数据库
      */
-    public static boolean updateProductTid(Product product, String tid)
-    {
+    public static boolean updateProductTid(Product product, String tid) {
         product.tid = tid;
         String sql = "select * from  " + Constant.product_sql + " where items like '%" + product.pid + "%'";
         try {
@@ -191,7 +184,8 @@ public class ProductUtils
                 pstmt.close();
                 System.out.println("[TID]:" + product.pid + "update!");
                 return true;
-            }return false;
+            }
+            return false;
         } catch (SQLException e) {
             System.out.println("=========SQLException==========" + e.getMessage());
             e.printStackTrace();
@@ -199,13 +193,14 @@ public class ProductUtils
         } catch (ClassNotFoundException e) {
             System.out.println("========ClassNotFoundException===========" + e.getMessage());
             e.printStackTrace();
-        }return false;
+        }
+        return false;
     }
+
     /**
      * 把product放入数据库
      */
-    public static void sendProductToSQL(Product product)
-    {
+    public static void sendProductToSQL(Product product) {
         if (checkIsExist(product) == 1)
             updateProductToSQL(product);
         else if (checkIsExist(product) == 0)
@@ -213,11 +208,11 @@ public class ProductUtils
         else
             System.err.println("product重复");
     }
+
     /**
      * 从IKEA获得一个完整的产品
      */
-    public static Product grabProductFromIKEA(String id)
-    {
+    public static Product grabProductFromIKEA(String id) {
         System.out.println("=============================\nNOW:" + id);
         Product p = new Product(id);
         String buf = IkeaUtils.setBuf(id);
@@ -232,11 +227,11 @@ public class ProductUtils
         p.setVirtualWeight2();
         return p;
     }
+
     /**
      * 添加一个完整的产品到数据库
      */
-    public static void addToSQL(Product p, int itemToggle)
-    {
+    public static void addToSQL(Product p, int itemToggle) {
         sendProductToSQL(p);
         if (itemToggle == 1)
             if (p.itemsList.size() != 0)
@@ -245,11 +240,28 @@ public class ProductUtils
             else
                 System.err.println("itemsList为空");
     }
+
+    /**
+     * 添加一个完整的产品到数据库
+     */
+    public static void addToSQL2(Product p, int itemToggle) {
+        sendProductToSQL(p);
+        if (itemToggle == 1)
+            if (p.itemsList.size() != 0)
+                for (Item item : p.itemsList) {
+                    if(DaoFactory.getItemDao().check(item)==0)
+                    DaoFactory.getItemDao().insertItem(item);
+                    else
+                    System.out.println(item.getPid()+"已存在");
+                }
+            else
+                System.err.println("itemsList为空");
+    }
+
     /**
      * 从数据库获得一个完整的产品
      */
-    public static Product setFromSQL(String id)
-    {
+    public static Product setFromSQL(String id) {
         Product p = new Product(id);
 
         String sql = "select * from  " + Constant.product_sql + " where items like '%" + id + "%'";
@@ -278,11 +290,11 @@ public class ProductUtils
         }
         return p;
     }
+
     /**
      * 从数据库获得Items的清单
      */
-    public static List<String> setItemsFromSQL(String id)
-    {
+    public static List<String> setItemsFromSQL(String id) {
         List itemList = new ArrayList();
         String sql = "select * from  " + Constant.product_sql + " where items like  '%" + id + "%' ";
         PreparedStatement pstmt = null;
@@ -296,19 +308,18 @@ public class ProductUtils
         } catch (SQLException e) {
             System.out.println("=========SQLException==========" + e.getMessage());
             e.printStackTrace();
-        }
-        catch (ClassNotFoundException e) {
+        } catch (ClassNotFoundException e) {
             System.out.println("========ClassNotFoundException===========" + e.getMessage());
             e.printStackTrace();
         }
 
         return itemList;
     }
+
     /**
      * 从数据库获得产品列表
      */
-    public static List<String> setProductListFromSQL()
-    {
+    public static List<String> setProductListFromSQL() {
         List productList = new ArrayList();
         String sql = "select * from  " + Constant.product_sql + " where tid is not null ";
         PreparedStatement pstmt = null;
@@ -322,8 +333,7 @@ public class ProductUtils
         } catch (SQLException e) {
             System.out.println("=========SQLException==========" + e.getMessage());
             e.printStackTrace();
-        }
-        catch (ClassNotFoundException e) {
+        } catch (ClassNotFoundException e) {
             System.out.println("========ClassNotFoundException===========" + e.getMessage());
             e.printStackTrace();
         }

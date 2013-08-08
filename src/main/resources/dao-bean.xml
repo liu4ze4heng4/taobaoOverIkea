@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:beans="http://www.springframework.org/schema/beans" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd ">
+
+	<bean
+		class="org.springframework.context.annotation.CommonAnnotationBeanPostProcessor" />
+
+	<!-- ikea数据源 -->
+	 <bean id="ikeaDatasource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <property name="driverClass" value="com.mysql.jdbc.Driver"/>
+        <!--<property name="jdbcUrl" value="jdbc:mysql://42.96.200.59:3306/ikea?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=UTF-8&amp;zeroDateTimeBehavior=convertToNull"/>-->
+         <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/ikea?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=UTF-8&amp;zeroDateTimeBehavior=convertToNull"/>
+
+         <property name="user" value="root"/>
+        <!--<property name="password" value="5294"/>-->
+        <property name="password" value="491272"/>
+        <property name="minPoolSize" value="1"></property>
+        <property name="maxPoolSize" value="10"></property>
+        <property name="initialPoolSize" value="1"></property>
+        <property name="maxIdleTime" value="60"></property>
+        <property name="acquireIncrement" value="2"></property>
+        <property name="maxStatements" value="0"></property>
+        <property name="idleConnectionTestPeriod" value="60"></property>
+        <property name="acquireRetryAttempts" value="30"></property>
+        <property name="breakAfterAcquireFailure" value="false"></property>
+        <property name="testConnectionOnCheckout" value="false"></property>
+    </bean>
+    
+	<bean id="ikeaTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource">
+			<ref bean="ikeaDatasource" />
+		</property>
+	</bean>
+	
+
+    <bean id="sendOrderDao"
+          class="TOI.dao.SendOrderDao"
+          scope="singleton">
+        <property name="ikeaTemplate" ref="ikeaTemplate" />
+    </bean>
+    <bean id="itemDao"
+          class="TOI.dao.ItemDao"
+          scope="singleton">
+        <property name="ikeaTemplate" ref="ikeaTemplate" />
+    </bean>
+</beans>

@@ -6,6 +6,7 @@ import TOI.util.XmlCatcher;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Item
 {
@@ -28,6 +29,103 @@ public class Item
     public ArrayList<String> picUrlsAtTaobao = new ArrayList();
     public String type;
     public String colorCode;
+
+    public void setPid(String pid) {
+        this.pid = pid;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setFacts(String facts) {
+        this.facts = facts;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
+    }
+
+    public void setPricePrevious(double pricePrevious) {
+        this.pricePrevious = pricePrevious;
+    }
+
+    public void setAssembledSize(String assembledSize) {
+        this.assembledSize = assembledSize;
+    }
+
+    public void setDesignerThoughts(String designerThoughts) {
+        this.designerThoughts = designerThoughts;
+    }
+
+    public void setDesigner(String designer) {
+        this.designer = designer;
+    }
+
+    public void setEnvironment(String environment) {
+        this.environment = environment;
+    }
+
+    public void setGoodToKnow(String goodToKnow) {
+        this.goodToKnow = goodToKnow;
+    }
+
+    public void setCareInst(String careInst) {
+        this.careInst = careInst;
+    }
+
+    public void setCustMaterials(String custMaterials) {
+        this.custMaterials = custMaterials;
+    }
+
+    public void setCustBenefit(String custBenefit) {
+        this.custBenefit = custBenefit;
+    }
+
+    public void setWeight(float weight) {
+        this.weight = weight;
+    }
+
+    public void setSize(float size) {
+        this.size = size;
+    }
+
+    public void setPicUrls(String picUrls) {
+        Collections.addAll(this.picUrls, picUrls.split(","));
+    }
+
+    public ArrayList<String> getPicUrlsAtTaobao() {
+        return picUrlsAtTaobao;
+    }
+
+    public void setPicUrlsAtTaobao(ArrayList<String> picUrlsAtTaobao) {
+        this.picUrlsAtTaobao = picUrlsAtTaobao;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public void setColorCode(String colorCode) {
+        this.colorCode = colorCode;
+    }
+
+    public String getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(String quantity) {
+        this.quantity = quantity;
+    }
+
+    public String getStockType() {
+        return stockType;
+    }
+
+    public void setStockType(String stockType) {
+        this.stockType = stockType;
+    }
+
     public String quantity;
     public String stockType;
 

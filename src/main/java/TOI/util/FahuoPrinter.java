@@ -1,14 +1,17 @@
 package TOI.util;
 
 import TOI.Constant.Constant;
+import TOI.model.Product;
 import TOI.model.TradeItem;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.tools.generic.MathTool;
 
 import java.io.*;
+import java.security.Timestamp;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -24,14 +27,17 @@ public class FahuoPrinter
                 Statement stmt = SQLUtils.getConnection().createStatement();
                 ResultSet rs = null;
                 rs = stmt.executeQuery(sql);
-                if (rs.next()) {
-                    tradeItem.name = rs.getString("name");
-                    tradeItem.facts=rs.getString("facts");
-                    String picUrl = rs.getString("picUrls");
-                    tradeItem.picUrl = picUrl.split(",")[0];
-                    tradeItem.type = rs.getString("type");
-                    tradeItem.price= rs.getString("price");
+                if (!rs.next()) {
+                    Product p = ProductUtils.grabProductFromIKEA(tradeItem.id);
+                    ProductUtils.addToSQL(p, 1);
+
                 }
+                tradeItem.name = rs.getString("name");
+                tradeItem.facts=rs.getString("facts");
+                String picUrl = rs.getString("picUrls");
+                tradeItem.picUrl = picUrl.split(",")[0];
+                tradeItem.type = rs.getString("type");
+                tradeItem.price= rs.getString("price");
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             } catch (SQLException e) {
@@ -95,7 +101,7 @@ public class FahuoPrinter
         String result = VelocityUtil.filterVM("Fahuo.vm", context);
         FileOutputStream out = null;
         try {
-            out = new FileOutputStream(new File("E:\\发货清单\\清单.html"));
+            out = new FileOutputStream(new File("\\user\\wk\\清单\\"+System.nanoTime()+".html"));
             out.write(result.getBytes("UTF-8"));
             out.close();
         } catch (FileNotFoundException e) {
