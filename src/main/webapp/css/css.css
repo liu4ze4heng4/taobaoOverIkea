@@ -1,0 +1,202 @@
+body {
+    margin-left: 0px;
+    margin-top: 0px;
+    margin-right: 0px;
+    margin-bottom: 0px;
+    background-color:#EAEAEA;
+    font-size: 14px;
+    FONT-FAMILY: "Microsoft YaHei",Verdana,Arial,Tahoma;
+    color:#4C4C4C;
+}
+a.a1{
+    display:block;
+    width:135px;
+    height:35px;
+    line-height:35px;
+    color:#FFFFFF;
+    text-decoration: none;
+    font-size:14px;
+}
+.input1 {
+    height: 27px;
+    width: 140px;
+    border: 1px solid #CCCCCC;
+}
+
+.allge{
+    border: 1px solid #D7D7D7;
+}
+.allge2{
+    background-color: #F4F4F4;
+    border-top-width: 1px;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
+    border-top-style: solid;
+    border-right-style: solid;
+    border-bottom-style: none;
+    border-left-style: solid;
+    border-top-color: #D7D7D7;
+    border-right-color: #D7D7D7;
+    border-bottom-color: #D7D7D7;
+    border-left-color: #D7D7D7;
+}
+.ddd{
+    width:72px;
+    height:27px;
+    border: 1px solid #4B8918;
+    background-color: #5BA707;
+    font-family:"黑体";
+    font-size:15px;
+    color:#FFFFFF;
+}
+.ddd8{
+    line-height: 23px;
+    vertical-align:middle;
+    display:block;
+    width:80px;
+    height:23px;
+    border: 1px solid #4B8918;
+    background-color: #5BA707;
+    font-family:"黑体";
+    font-size:15px;
+    color:#FFFFFF;
+}
+.ddd7{
+    width:80px;
+    height:27px;
+    border: 1px solid #4B8918;
+    background-color: #5BA707;
+    font-family:"黑体";
+    font-size:15px;
+    color:#FFFFFF;
+}
+.ddd4{
+    width:96px;
+    height:27px;
+    border: 1px solid #4B8918;
+    background-color: #5BA707;
+    color:#FFFFFF;
+    font-family:"黑体";
+}
+.ddd3{
+    width:72px;
+    height:27px;
+    border: 1px solid #4B8918;
+    background-color: #5BA707;
+    font-family:"黑体";
+    font-size:15px;
+    color:#FFFFFF;
+}
+.ddd2{
+    border-top-width: 1px;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
+    border-top-style: none;
+    border-right-style: none;
+    border-bottom-style: dotted;
+    border-left-style: none;
+    border-top-color: #999999;
+    border-right-color: #999999;
+    border-bottom-color: #999999;
+    border-left-color: #999999;
+
+
+}
+input{vertical-align: middle;}
+.input2 {
+    height: 22px;
+    line-height:22px;
+    color:#666666;
+    text-align:center;
+    border: 1px solid #CCCCCC;
+}
+.input3 {
+
+    border: 1px solid #CCCCCC;
+}
+.input4 {
+    height: 25px;
+    color:#666666;
+    border: 1px solid #CCCCCC;
+}
+.down {
+    border-top-width: 1px;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
+    border-top-style: none;
+    border-right-style: none;
+    border-bottom-style: solid;
+    border-left-style: none;
+    border-top-color: #CCCCCC;
+    border-right-color: #CCCCCC;
+    border-bottom-color: #CCCCCC;
+    border-left-color: #CCCCCC;
+}
+a {
+
+    text-decoration: none;
+    color:#666666;
+
+}
+a:hover {
+    text-decoration: underline;
+}
+
+.STYLE1 {color: #FF6D00}
+.jy{
+    width:72px;
+    height:27px;
+    border: 1px solid #CCCCCC;
+    background-color: #F2F2F2;
+    font-family:"黑体";
+    font-size:15px;
+    color:#666666;
+}
+
+#checkwinwarpper {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    background: #000;
+    filter: alpha(opacity =   50); /*IE滤镜，透明度50%*/
+    -moz-opacity: 0.5; /*Firefox私有，透明度50%*/
+    opacity: 0.5; /*其他，透明度50%*/
+}
+
+#checkwincontent {
+    display: block;
+    clear: both;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 999;
+    overflow: auto;
+}
+
+
+.winwarpper {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    background: #000;
+    filter: alpha(opacity =   50); /*IE滤镜，透明度50%*/
+    -moz-opacity: 0.5; /*Firefox私有，透明度50%*/
+    opacity: 0.5; /*其他，透明度50%*/
+}
+
+.wincontent {
+    display: block;
+    clear: both;
+    position: absolute;
+    overflow: auto;
+}
+.imgButton{
+    cursor: pointer;
+}
