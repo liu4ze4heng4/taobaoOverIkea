@@ -334,7 +334,7 @@ public class ProductUtils {
             System.out.println("=========SQLException==========" + e.getMessage());
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
-            System.out.println("========ClassNotFoundException===========" + e.getMessage());
+            System.out.println("======== ClassNotFoundException===========" + e.getMessage());
             e.printStackTrace();
         }
 
