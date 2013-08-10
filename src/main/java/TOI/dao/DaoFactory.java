@@ -14,7 +14,7 @@ public class DaoFactory {
 	}
 
 	public static synchronized void init() {
-		resource = new ClassPathResource("../dao-bean.xml");
+		resource = new ClassPathResource("dao-bean.xml");
 		beanFactory = new XmlBeanFactory(resource);
 	}
 

@@ -180,6 +180,7 @@
 
 	<build>
         <finalName>IPS</finalName>
+
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -228,10 +229,15 @@
 			</plugin>
 		</plugins>
 
+        <filters>
+            <filter>${basedir}/filters/filter-${pub}.properties</filter>
+            <filter>${basedir}/filters/filter-${env}.properties</filter>
+        </filters>
+
 		<resources>
 			<resource>
 				<directory>${basedir}/src/main/resources</directory>
-				<filtering>false</filtering>
+				<filtering>true</filtering>
 			</resource>
 			<resource>
 				<directory>${basedir}/src/main/java</directory>
@@ -244,6 +250,34 @@
 
 		<sourceDirectory>${basedir}/src/main/java</sourceDirectory>
 	</build>
+
+
+    <profiles>
+        <profile>
+            <id>mac</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <env>mac</env>
+                <pub>share</pub>
+            </properties>
+        </profile>
+        <profile>
+            <id>linux</id>
+            <properties>
+                <env>linux</env>
+                <pub>share</pub>
+            </properties>
+        </profile>
+        <profile>
+            <id>windows</id>
+            <properties>
+                <env>windows</env>
+                <pub>share</pub>
+            </properties>
+        </profile>
+    </profiles>
 
 
 </project>
