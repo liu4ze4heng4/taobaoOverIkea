@@ -11,3 +11,4 @@
 *.tmp
 *.iml
 .project
+*.DS_store
