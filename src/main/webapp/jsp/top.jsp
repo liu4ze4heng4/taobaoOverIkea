@@ -40,7 +40,7 @@
                     <td width="2" align="center" onmouseover="this.style.background='#69B310'"
                         onmouseout="this.style.background='#5BA707'"><img src="/img/other/sss.jpg"></td>
                     <td width="135" align="center" onmouseover="this.style.background='#69B310'"
-                        onmouseout="this.style.background='#5BA707'"><a href="/getSendOrder" class="a1">发货清单</a>
+                        onmouseout="this.style.background='#5BA707'"><a href="/sendOrder" class="a1">发货清单</a>
                     </td>
                     <td width="2" align="center" onmouseover="this.style.background='#69B310'"
                         onmouseout="this.style.background='#5BA707'"><img src="/img/other/sss.jpg"></td>

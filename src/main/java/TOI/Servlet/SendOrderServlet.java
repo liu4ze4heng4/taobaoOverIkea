@@ -1,6 +1,7 @@
 package TOI.Servlet;
 
-import java.io.IOException;
+import TOI.dao.DaoFactory;
+import TOI.model.SendOrder;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
@@ -8,25 +9,28 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.List;
 
-public class UpdateSendOrderServlet extends HttpServlet {
-	private static String addItemPage = "/jsp/addItem.jsp";
+public class SendOrderServlet extends HttpServlet {
+	private static String addItemPage = "/jsp/sendorder.jsp";
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String username = request.getParameter("token");
-		String password = request.getParameter("p");
-
-		request.setAttribute("USER", username);
-		request.setAttribute("PASSWORD", password);
-
 		ServletContext context = getServletContext();
 
-		System.out.println("Redirecting to" + addItemPage);
-		RequestDispatcher dispatcher = context.getRequestDispatcher(addItemPage);
+		//读取senderOrder
+        List<SendOrder> orders=DaoFactory.getSendOrderDao().getSendOrderByFlag(1);
+
+		request.setAttribute("orders", orders);
+
+        System.out.println("Redirecting to" + addItemPage);
+        RequestDispatcher dispatcher = context.getRequestDispatcher(addItemPage);
 		dispatcher.forward(request, response);
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doPost(request, response);
-	}
+    }
+
 }
+

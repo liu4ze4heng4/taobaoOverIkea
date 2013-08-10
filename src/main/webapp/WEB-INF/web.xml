@@ -29,12 +29,12 @@
     </servlet-mapping>
     
      <servlet>
-        <servlet-name>getSendOrder</servlet-name>
-        <servlet-class>TOI.Servlet.getSendOrderServlet</servlet-class>
+        <servlet-name>sendOrder</servlet-name>
+        <servlet-class>TOI.Servlet.SendOrderServlet</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>getSendOrder</servlet-name>
-        <url-pattern>/getSendOrder</url-pattern>
+        <servlet-name>sendOrder</servlet-name>
+        <url-pattern>/sendOrder</url-pattern>
     </servlet-mapping>
     
     
