@@ -16,7 +16,7 @@ public class Constant {
     public static String appkey = "21402582";
     public static String appSecret = "daf18bbfd74783b446f989f72f07de87";
     public static String nick = "charick";
-    public static String sessionKey="6102224bcf708272d219dbd6f0bf1f941834e157f6f5cec42635718";
+    public static String sessionKey="6101e179fcef6feeb81d05d331a2bae22805b45d2e558ba42635718";
     public static String vm="productDetail.vm";
     public static String product_sql="product_charick";
     public static String item_sql="item_charick";

@@ -31,12 +31,16 @@ public class SendOrderDao implements ParameterizedRowMapper<SendOrder> {
 		SendOrder bean = new SendOrder();
 		bean.setId(rs.getInt("id"));
 		bean.setTid(rs.getString("tid"));
+		bean.setBuyerNIck(rs.getString("buyer_nick"));
 		bean.setPayTime(rs.getTimestamp("pay_time"));
 		bean.setSellerMemo(rs.getString("trade_memo"));
+        bean.setExpressId(rs.getString("express_id"));
 		bean.setExpressNum(rs.getString("express_number"));
 		bean.setReceiverMobile(rs.getString("receiver_mobile"));
         bean.setReceiverName(rs.getString("receiver_name"));
         bean.setReceiverAddress(rs.getString("receiver_address"));
+        bean.setRecerverState(rs.getString("receiver_state"));
+        bean.setReceiverCity(rs.getString("receiver_city"));
 
 
 		return bean;

@@ -18,8 +18,8 @@ import java.util.*;
 public class Fahuo {
 
     public static void main(String[] args) {
-        TaobaoUtils taobaoUtil=TaobaoUtils.getInstance("6102224bcf708272d219dbd6f0bf1f941834e157f6f5cec42635718");
-        ArrayList<Trade> tradeList = taobaoUtil.tradeFilter("2013-07-24  00:00:00", "2013-08-10  23:59:59");
+        TaobaoUtils taobaoUtil=TaobaoUtils.getInstance("6102304aace01acb1f1e75904bf8deeeb6b32eceb7837e142635718");
+        ArrayList<Trade> tradeList = taobaoUtil.tradeFilter("2013-07-30  00:00:00", "2013-08-10  23:59:59");
         List<TradeItem> tradeItems = generateTradeItems(tradeList);
         List<TradeItem> tradeItemList = FahuoPrinter.enrichTradeItem(tradeItems);
         FahuoPrinter.LetsPrint(tradeItemList);
