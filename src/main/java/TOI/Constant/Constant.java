@@ -1,5 +1,7 @@
 package TOI.Constant;
 
+import TOI.util.commen.Properties;
+
 /**
  * Created with IntelliJ IDEA.
  * User: W.k
@@ -8,6 +10,9 @@ package TOI.Constant;
  * To change this template use File | Settings | File Templates.
  */
 public class Constant {
+    public static Properties properties=Properties.getInstant("config.properties");
+
+
     public static final String split = "#######";
     public static final String split2 = "@@@@@@@@";
     public static final String picPath = "E:\\IKEAPIC";

@@ -10,11 +10,10 @@
 	<!-- ikea数据源 -->
 	 <bean id="ikeaDatasource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
         <property name="driverClass" value="com.mysql.jdbc.Driver"/>
-        <!--<property name="jdbcUrl" value="jdbc:mysql://42.96.200.59:3306/ikea?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=UTF-8&amp;zeroDateTimeBehavior=convertToNull"/>-->
-         <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/ikea?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=UTF-8&amp;zeroDateTimeBehavior=convertToNull"/>
+        <property name="jdbcUrl" value="jdbc:mysql://42.96.200.59:3306/ikea?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=UTF-8&amp;zeroDateTimeBehavior=convertToNull"/>
+         <!--<property name="jdbcUrl" value="jdbc:mysql://localhost:3306/ikea?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=UTF-8&amp;zeroDateTimeBehavior=convertToNull"/>-->
 
          <property name="user" value="root"/>
-        <!--<property name="password" value="5294"/>-->
         <property name="password" value="491272"/>
         <property name="minPoolSize" value="1"></property>
         <property name="maxPoolSize" value="10"></property>
