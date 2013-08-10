@@ -1,19 +1,14 @@
 package TOI.dao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.Timestamp;
-import java.util.List;
-
 import TOI.model.SendOrder;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+
+import java.sql.*;
+import java.util.List;
 
 public class SendOrderDao implements ParameterizedRowMapper<SendOrder> {
 	public JdbcTemplate ikeaTemplate;
@@ -41,10 +36,15 @@ public class SendOrderDao implements ParameterizedRowMapper<SendOrder> {
         bean.setReceiverAddress(rs.getString("receiver_address"));
         bean.setRecerverState(rs.getString("receiver_state"));
         bean.setReceiverCity(rs.getString("receiver_city"));
-
-
+        bean.setExpressNum(rs.getString("express_number"));
+        bean.setStatus(rs.getInt("status"));
 		return bean;
 	}
+
+    public  void updateExpressCode(int id, String code,int status){
+        String sql = "update  user_sendorder set express_number=? , status=? where id=? ";
+        ikeaTemplate.update(sql, code, status,id);
+    }
 
 
 	public List<SendOrder> getSendOrderByStatus(int status) {

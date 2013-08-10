@@ -34,18 +34,28 @@ public class SendOrder {
     }
 
     String receiverPhone;
-	int status;
-	String sellerMemo;
-	double price;
-	String expressNum;
-	String expressId;
-	int sellerFlag;
 
-
-
+    int status;
+    String sellerMemo;
+    double price;
+    String expressNum;
+    String expressId;
+    int sellerFlag;
 	public Date getMtime() {
 		return mtime;
 	}
+
+
+
+    public String getStatusDep(){
+         if(status==1){
+             return  "<font color='blue'>已付款，等待发货</font>";
+         }else if(status==2){
+             return  "<font color='green'>已经发货</font>";
+         }else {
+             return  "<font color='red'>异常</font>";
+         }
+    }
 
 	public void setMtime(Date mtime) {
 		this.mtime = mtime;

@@ -37,18 +37,28 @@
 </head>
 <body>
 <%@ include file="top.jsp" %>
+<%
+List<SendOrder> orders = (List<SendOrder>) request.getAttribute("orders");
+%>
+
+<form name="orderListForm" action="/IPS/sendOrder?m=updateOrderInfo&orderNum=<%=orders.size()%>" method="post" >
+
 <table width="960" height="35" border="0" align="center" cellpadding="0" cellspacing="0" class="allge2"
        style="margin-top:20px;">
     <tbody>
     <tr>
         <td> &nbsp;&nbsp;<strong>发货清单</strong></td>
         <td class="button"><input type="button" value="简洁/明细"></td>
+         <td class="button"><input type="button" value="打印运单" onClick="PreviewZjs()"> </td>
+          <td class="button"><input type="submit" value="更新发货" /></td>
     </tr>
     </tbody>
 </table>
 
+
 <table width="960" class="main">
     <tbody>
+
     <tr>
         <th width="25"><input type="checkbox" onclick='chkall("table1",this)' ></th>
         <th width="90">内部编号</th>
@@ -58,10 +68,9 @@
         <th width="100">电话</th>
         <th width="100">物流公司</th>
         <th width="180">运单号</th>
-        <th width="80">操作</th>
+        <th width="80">状态</th>
     </tr>
     <%
-        List<SendOrder> orders = (List<SendOrder>) request.getAttribute("orders");
         if (orders != null) {
             for (int i = 0; i < orders.size(); i++) {
                 SendOrder order = orders.get(i);
@@ -73,7 +82,8 @@
     %>
     <td><input type="checkbox" class="check" id="CK<%=i%>"></td>
 
-    <td><input type="text" id="ID<%=i%>" style="border: 0px;width: 90;" value="<%= order.getId() %>"  border="0" readonly=true></td>
+    <td><input type="text" id="ID<%=i%>" name="ID<%=i%>" style="border: 0px;width: 90;" value="<%= order.getId() %>"  border="0"
+    readonly=true></td>
     <td><input type="text" id="PT<%=i%>" style="border: 0px;width: 175;" value="<%= order.getPayTime() %>" readonly=true></td>
     <td><input type="text" id="BN<%=i%>" style="border: 0px;width: 100;" value="<%= order.getBuyerNIck()%>" readonly=true></td>
     <td><input type="text" id="RN<%=i%>" style="border: 0px;width: 100;" value="<%= order.getReceiverName() %>" readonly=true></td>
@@ -89,8 +99,8 @@
         out.println("德邦");
     else
         out.println("无");%>" readonly=true></td>
-    <td><input type="text" id="EN<%=i%>" style="border: 0px;width: 180;" value="" ></td>
-    <td><a href="AdminServlet?action=ordermanage&id=<%= order.getId()%>">提交</a></td>
+    <td><input type="text" id="EN<%=i%>" name="EN<%=i%>" style="border: 0px;width: 180;" value="<%= order.getExpressNum() %>" ></td>
+    <td><%= order.getStatusDep() %></td>
     </tr>
 
     <tr class='detail' bgcolor='#f8f8f8'>
@@ -105,10 +115,12 @@
             }
         }
     %>
+
+
     </tbody>
 </table>
-<input type="button" value="打印预览" onClick="MyPreview()">
-<input type="button" value="打印预览" onClick="PreviewZjs()">
+</form>
+
 <script type="text/javascript">
     var LODOP; //声明为全局变量
     $(document).ready(function () {
