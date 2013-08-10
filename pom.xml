@@ -230,8 +230,8 @@
 		</plugins>
 
         <filters>
-            <filter>${basedir}/filters/filter-${pub}.properties</filter>
-            <filter>${basedir}/filters/filter-${env}.properties</filter>
+            <filter>${basedir}/filter/filter-${pub}.properties</filter>
+            <filter>${basedir}/filter/filter-${env}.properties</filter>
         </filters>
 
 		<resources>
