@@ -15,7 +15,7 @@ public class Constant {
 
     public static final String split = "#######";
     public static final String split2 = "@@@@@@@@";
-    public static final String picPath = "E:\\IKEAPIC";
+    public static final String picPath = properties.getString("picPath");
     public static final String tb_category_file = "resources/category/tb_category";
     public static String url = "http://gw.api.taobao.com/router/rest";
     public static String appkey = "21402582";

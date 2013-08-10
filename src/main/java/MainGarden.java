@@ -22,7 +22,7 @@ public class MainGarden {
 //            IkeaStockUtil.StockInfo2SQL(pid);}
 ////////////////////////更新product表内一个产品/////////////////////////
         Product p = ProductUtils.grabProductFromIKEA("10265127");
-        ProductUtils.addToSQL(p, 1);
+        ProductUtils.addToSQL2(p, 1);
 //////////////////////从SQL获取一个产品/////////////////////////
 //        Product p = ProductUtils.setFromSQL("80243189");
 ////////////////////////上传至淘宝/////////////////////////
