@@ -41,7 +41,7 @@
 List<SendOrder> orders = (List<SendOrder>) request.getAttribute("orders");
 %>
 
-<form name="orderListForm" action="/IPS/sendOrder?m=updateOrderInfo&orderNum=<%=orders.size()%>" method="post" >
+<form name="orderListForm" action="./sendOrder?m=updateOrderInfo&orderNum=<%=orders.size()%>" method="post" >
 
 <table width="960" height="35" border="0" align="center" cellpadding="0" cellspacing="0" class="allge2"
        style="margin-top:20px;">
@@ -106,7 +106,7 @@ List<SendOrder> orders = (List<SendOrder>) request.getAttribute("orders");
     <tr class='detail' bgcolor='#f8f8f8'>
         <td></td>
         <td></td>
-        <td colspan="7">
+        <td colspan="30">
             地址:<input type="text" id="RS<%=i%>" style="border: 0px;width: 100;" value="<%= order.getRecerverState()%>" readonly=true> <input type="text" id="RC<%=i%>" style="border: 0px;width: 100;" value="<%= order.getReceiverCity()%>" readonly=true> <input type="text" id="RA<%=i%>" style="border: 0px;width: 600;" value="<%=order.getReceiverAddress()%>" readonly=true>
             <br>内件:<input type="text" id="SM<%=i%>" style="border: 0px;width: 100;" value="<%=order.getSellerMemo().replace("[", "<br>备注:").replace("]|", "") %>" readonly=true>
         </td>
