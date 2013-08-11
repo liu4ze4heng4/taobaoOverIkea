@@ -109,7 +109,7 @@ List<SendOrder> orders = (List<SendOrder>) request.getAttribute("orders");
         <td colspan="30">
             地址:<input type="text" id="RS<%=i%>" style="border: 0px;width: 100;" value="<%= order.getRecerverState()%>" readonly=true> <input type="text" id="RC<%=i%>" style="border: 0px;width: 100;" value="<%= order.getReceiverCity()%>" readonly=true> <input type="text" id="RA<%=i%>" style="border: 0px;width: 600;" value="<%=order.getReceiverAddress()%>" readonly=true>
             <br/>内件:<input type="text" id="SM<%=i%>" style="border: 0px;width: 800;" value="<%=order.getSellerMemo()
-            .replace("[", "<br>备注:").replace("]|", "") %>" readonly=true>
+            .replace("[", "备注:").replace("]|", "") %>" readonly=true>
         </td>
     </tr>
     <%
