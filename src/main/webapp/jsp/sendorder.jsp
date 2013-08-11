@@ -3,8 +3,8 @@
 <html>
 <head>
     <title>发货清单-趣活宜家代购联盟</title>
-    <link href="/css/css.css" rel="stylesheet" type="text/css">
-    <link href="/css/style.css" rel="stylesheet" type="text/css">
+    <link href="./css/css.css" rel="stylesheet" type="text/css">
+    <link href="./css/style.css" rel="stylesheet" type="text/css">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
     <script language="javascript" src="http://mtsoftware.v053.gokao.net/samples/LodopFuncs.js"></script>
     <object id="LODOP_OB" classid="clsid:2105C259-1E0C-4534-8141-A753534CB4CA" width=0 height=0>
@@ -108,7 +108,8 @@ List<SendOrder> orders = (List<SendOrder>) request.getAttribute("orders");
         <td></td>
         <td colspan="30">
             地址:<input type="text" id="RS<%=i%>" style="border: 0px;width: 100;" value="<%= order.getRecerverState()%>" readonly=true> <input type="text" id="RC<%=i%>" style="border: 0px;width: 100;" value="<%= order.getReceiverCity()%>" readonly=true> <input type="text" id="RA<%=i%>" style="border: 0px;width: 600;" value="<%=order.getReceiverAddress()%>" readonly=true>
-            <br>内件:<input type="text" id="SM<%=i%>" style="border: 0px;width: 100;" value="<%=order.getSellerMemo().replace("[", "<br>备注:").replace("]|", "") %>" readonly=true>
+            <br/>内件:<input type="text" id="SM<%=i%>" style="border: 0px;width: 800;" value="<%=order.getSellerMemo()
+            .replace("[", "<br>备注:").replace("]|", "") %>" readonly=true>
         </td>
     </tr>
     <%
