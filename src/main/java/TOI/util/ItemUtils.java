@@ -194,7 +194,7 @@ public class ItemUtils
                 URLConnection urlCon = url.openConnection();
                 InputStream is = urlCon.getInputStream();
                 BufferedInputStream bis = new BufferedInputStream(is);
-                FileOutputStream fos = new FileOutputStream(new StringBuilder().append("E:\\IKEAPIC\\\\ITEMPICS\\\\").append(item.pid).append("-").append(i).append(".jpg").toString());
+                FileOutputStream fos = new FileOutputStream(new StringBuilder().append(Constant.picPath).append(item.pid).append("-").append(i).append(".jpg").toString());
 
                 BufferedOutputStream bos = new BufferedOutputStream(fos);
                 int read;

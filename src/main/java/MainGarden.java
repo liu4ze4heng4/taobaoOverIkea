@@ -1,5 +1,6 @@
+import TOI.dao.DaoFactory;
 import TOI.model.Product;
-import TOI.util.ProductUtils;
+import TOI.model.User;
 import TOI.util.TaobaoUtils;
 
 /**
@@ -21,22 +22,32 @@ public class MainGarden {
 //        for (String pid:pids){
 //            IkeaStockUtil.StockInfo2SQL(pid);}
 ////////////////////////更新product表内一个产品/////////////////////////
-        Product p = ProductUtils.grabProductFromIKEA("10265127");
-        ProductUtils.addToSQL2(p, 1);
+//        Product p = ProductUtils.grabProductFromIKEA("10265127");
+//        ProductUtils.addToSQL2(p, 1);
 //////////////////////从SQL获取一个产品/////////////////////////
 //        Product p = ProductUtils.setFromSQL("80243189");
 ////////////////////////上传至淘宝/////////////////////////
-        TaobaoUtils.addTaobaoItem(p);
-        TaobaoUtils.uploadExtraPic(p);
+//        TaobaoUtils tu=TaobaoUtils.getInstance("6100b01cb1fd582bbe96e89874da66a27632cf0a3def5cc183118826");
+//        User user=tu.getTBUser();
+//        DaoFactory.getUserDao(). updateUserByTbName(user);
+//        Product p=tu.selectProduct("90195201");
+//        tu.addTaobaoItem2(p, DaoFactory.getUserDao().getUserByTbName(user.getTbName()));
+///////////////////////////////////////////////////////////
+//        TaobaoUtils tu=TaobaoUtils.getInstance("6100b01cb1fd582bbe96e89874da66a27632cf0a3def5cc183118826");
+//        tu.getPicCategory("宝贝图片");
 ///////////////////////////////////////////////////////////////
 //       TaobaoUtils.saveTBcategory2File();
 //        TaobaoUtils.getPicCategory("宝贝图片");
 ////////////////////////删除未引用图片/////////////////////////
 //        for(int i=0;i<20;i++)
 //        TaobaoUtils.deleteUnusePics();
-//////////////////////更新线上宝贝/////////////////////////
-//        TaobaoUtils.updateOnlineItem(p);
-//////////////////////全部更新线上////////////////////////
+//new////////////////////更新线上宝贝/////////////////////////
+        TaobaoUtils tu=TaobaoUtils.getInstance("6102902e2515c567b4728240e466bdd4878d4f5d3b73a6842635718");
+        User user=tu.getTBUser();
+        DaoFactory.getUserDao(). updateUserByTbName(user);
+        Product p=tu.selectProduct("30160964");
+        tu.updateTaobaoItem(p, DaoFactory.getUserDao().getUserByTbName(user.getTbName()));
+        //////////////////////全部更新线上////////////////////////
 //        List<String> pids = ProductUtils.setProductListFromSQL();
 //        for (String pid:pids){
 //            Product p = ProductUtils.setFromSQL(pid);

@@ -29,10 +29,10 @@ public class TaobaoCallBackServlet extends HttpServlet
     	String top_session=request.getParameter("top_session");
     	
     	User user= TaobaoUtils.getInstance(top_session).getTBUser();
-    	user.setSessionKey(top_session);
+    	user.setTbToken(top_session);
     	request.getSession().setAttribute("user", user);
     	request.getSession().setAttribute("userName", user.getName());
-    	request.getSession().setAttribute("key", user.getSessionKey());
+    	request.getSession().setAttribute("key", user.getTbToken());
     	//
     	
     	RequestDispatcher dispatcher = context.getRequestDispatcher("/jsp/index.jsp");

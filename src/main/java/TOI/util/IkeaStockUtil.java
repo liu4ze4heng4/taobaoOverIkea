@@ -112,12 +112,12 @@ public class IkeaStockUtil {
             return "0"+Constant.split + "-2"+Constant.split + "无网页";
     }
 
-    public static String WeightCatcher(String id) {
+    public static float WeightCatcher(String id) {
         double wholeweight = 0;
 
         String buf2 = setBufB(id);
-        if (buf2==null)
-            buf2 = setBufB("S"+id);
+        if(buf2==null)
+            return -1;
         List<Double> weight = new ArrayList<Double>();
         String regexStr = "<div class=\"rowContainerPackage\">[\\s\\S]*?<div class=\"clear\"></div>";
         Pattern productCell = Pattern.compile(regexStr);
@@ -144,8 +144,8 @@ public class IkeaStockUtil {
             DecimalFormat df=new DecimalFormat(".##");
             String stringWeight=df.format(wholeweight);
             System.out.println(stringWeight);
-            return stringWeight;
-        } else return "-1";
+            return Float.parseFloat(stringWeight);
+        } else return -1;
     }
 
 

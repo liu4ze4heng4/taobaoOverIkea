@@ -1,9 +1,14 @@
 package TOI.util;
 
+import TOI.Constant.Constant;
+import TOI.model.Product;
+import TOI.model.User;
+import TOI.model.UserProduct;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 import org.apache.velocity.app.VelocityEngine;
+import org.apache.velocity.tools.generic.MathTool;
 
 import java.io.StringWriter;
 import java.util.Properties;
@@ -36,7 +41,7 @@ public class VelocityUtil {
         if (engine == null) {
             engine = new VelocityEngine();
             Properties p = new Properties();
-            p.setProperty(Velocity.FILE_RESOURCE_LOADER_PATH, "resources/velocity");
+            p.setProperty(Velocity.FILE_RESOURCE_LOADER_PATH, "velocity");
             p.setProperty(Velocity.INPUT_ENCODING, "utf-8");
             p.setProperty(Velocity.OUTPUT_ENCODING, "utf-8");
             try {
@@ -46,5 +51,14 @@ public class VelocityUtil {
             }
         }
         return engine;
+    }
+    public static String generateDescription(Product product,User user)
+    {
+        VelocityContext context = new VelocityContext();
+        context.put("itemList", product.getItemObjs());
+
+        context.put("math", new MathTool());
+        String description = VelocityUtil.filterVM(user.getVM(), context);
+        return description;
     }
 }

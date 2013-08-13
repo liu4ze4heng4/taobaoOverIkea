@@ -24,4 +24,13 @@ public class DaoFactory {
 	public static ItemDao getItemDao() {
 		return (ItemDao) beanFactory.getBean("itemDao");
 	}
+    public static ProductDao getProductDao() {
+		return (ProductDao) beanFactory.getBean("productDao");
+	}
+    public static UserProductDao getUserProductDao() {
+        return (UserProductDao) beanFactory.getBean("userProductDao");
+    }
+    public static UserDao getUserDao() {
+        return (UserDao) beanFactory.getBean("userDao");
+    }
 }

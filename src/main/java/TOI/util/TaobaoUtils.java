@@ -1,10 +1,8 @@
 package TOI.util;
 
 import TOI.Constant.Constant;
-import TOI.model.Product;
-import TOI.model.User;
-import TOI.util.ItemUtils;
-import TOI.util.ProductUtils;
+import TOI.dao.DaoFactory;
+import TOI.model.*;
 import com.taobao.api.ApiException;
 import com.taobao.api.DefaultTaobaoClient;
 import com.taobao.api.FileItem;
@@ -16,25 +14,26 @@ import com.taobao.api.response.*;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class TaobaoUtils {
-    public static  TaobaoUtils getInstance(String topSession){
-        TaobaoUtils t=new TaobaoUtils(topSession);
+    public static TaobaoUtils getInstance(String topSession) {
+        TaobaoUtils t = new TaobaoUtils(topSession);
         return t;
     }
+
     public User getTBUser() {
         User user = new User();
         TaobaoClient client = new DefaultTaobaoClient(Constant.url, Constant.appkey, Constant.appSecret);
         UserSellerGetRequest req = new UserSellerGetRequest();
         req.setFields("nick");
         try {
-            UserSellerGetResponse response = (UserSellerGetResponse)client.execute(req, topSession);
-            user.setName(response.getUser().getNick());
+            UserSellerGetResponse response = client.execute(req, topSession);
+            user.setTbName(response.getUser().getNick());
+            user.setTbToken(topSession);
         } catch (ApiException e) {
             e.printStackTrace();
         }
@@ -45,7 +44,7 @@ public class TaobaoUtils {
     public static Map<String, String> getCCMapFromFile() {
         Map result = new HashMap();
         try {
-            InputStreamReader insReader = new InputStreamReader(new FileInputStream(new File("resources/category/tb_category")), "utf-8");
+            InputStreamReader insReader = new InputStreamReader(new FileInputStream(new File("tb_category")), "utf-8");
             BufferedReader bufReader = new BufferedReader(insReader);
             String temp;
             while ((temp = bufReader.readLine()) != null) {
@@ -59,147 +58,218 @@ public class TaobaoUtils {
         return result;
     }
 
-    public static void saveTBcategory2File() {
-        try {
-            ArrayList<SellerCid> tbclist = getSellerCid();
-            FileWriter fw = new FileWriter(new File("resources/category/tb_category"));
-            for (SellerCid tbCategory : tbclist) {
-                fw.write(tbCategory + "\n");
+    //    public static void getOnlineProducts() {
+//        TaobaoClient client = new DefaultTaobaoClient(Constant.url, Constant.appkey, Constant.appSecret);
+//        ItemsOnsaleGetRequest req = new ItemsOnsaleGetRequest();
+//        req.setFields("num_iid,title,price");
+//
+//        req.setPageNo(Long.valueOf(1L));
+//
+//        req.setOrderBy("list_time:desc");
+//        req.setIsTaobao(Boolean.valueOf(true));
+//
+//        req.setPageSize(Long.valueOf(200L));
+//        try {
+//            ItemsOnsaleGetResponse response = (ItemsOnsaleGetResponse) client.execute(req, Constant.sessionKey);
+//            System.out.println(response.getTotalResults());
+//            System.out.println(response.getItems().get(0));
+//            int count = 0;
+//            for (com.taobao.api.domain.Item onlineProduct : response.getItems()) {
+//                String numId = onlineProduct.getNumIid().toString();
+//                String title = onlineProduct.getTitle();
+//                if (title.contains(".")) {
+//                    int firstDot = title.indexOf(".");
+//                    String pid = title.substring(firstDot - 3, firstDot + 7).replace(".", "");
+//                    System.out.println(pid);
+//                    Product p = new Product(pid);
+//                    p.tid = numId;
+//                    p.title = title;
+//                    ProductUtils.addProductToSQL(p);
+//                    count++;
+//                }
+//            }
+//            System.out.println(count);
+//        } catch (ApiException e) {
+//            e.printStackTrace();
+//        }
+//    }
+    public  List<String> uploadExtraPic(Product p,String tid) {
+        TaobaoClient client = new DefaultTaobaoClient(Constant.url, Constant.appkey, Constant.appSecret);
+        ItemImgUploadRequest req = new ItemImgUploadRequest();
+        List<String> picIds=new ArrayList<String>();
+        for (int i = 1; (i < p.getItemObjs().size()) && (i < 5); i++) {
+            req.setNumIid(Long.valueOf(tid));
+            req.setPosition(Long.valueOf(i));
+
+            FileItem fItem = new FileItem(new File(Constant.picPath + (p.getItemObjs().get(i)).getPid() + "-0.jpg"));
+            req.setImage(fItem);
+            if (i == 0)
+                req.setIsMajor(Boolean.valueOf(true));
+            else
+                req.setIsMajor(Boolean.valueOf(false));
+            try {
+                ItemImgUploadResponse response = client.execute(req, topSession);
+                picIds.add(response.getItemImg().getId().toString());
+            } catch (ApiException e) {
+                e.printStackTrace();
             }
-            fw.flush();
-            fw.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
-        System.out.println("save taobao category to file finish!");
+        return picIds;
     }
 
-    public static void addTaobaoItem(Product p) {
-        for (TOI.model.Item item : p.itemsList) {
-            ItemUtils.setPicUrlAtTaobao(item);
+
+    public void updateTaobaoItem(Product p,User user)
+    {
+    Item mainItem=p.getItemObjs().get(0);
+    int pid=p.getPid();
+    int userId=user.getId();
+    String tid=DaoFactory.getUserProductDao().getUserProduct(userId,pid).getTid();
+        TaobaoClient client = new DefaultTaobaoClient(Constant.url, Constant.appkey, Constant.appSecret);
+            ItemUpdateRequest req = new ItemUpdateRequest();
+            req.setNumIid(Long.valueOf(Long.parseLong(tid)));
+
+            req.setDesc(VelocityUtil.generateDescription(p,user));
+
+            req.setSellerCids( getCCMapFromFile().get(mainItem.getSubCategory()));
+            req.setPostageId(Long.valueOf(user.getTbExpressId()));
+
+            req.setItemWeight(mainItem.getWeight()+"");
+            try {
+                ItemUpdateResponse response =  client.execute(req, Constant.sessionKey);
+                System.out.println(response.getBody());
+            } catch (ApiException e) {
+            }
+
+    }
+
+    public Product selectProduct(String id){
+        Item mainItem = DaoFactory.getItemDao().getItemByIid(id);
+        int productId = mainItem.getProductId();
+        Product p = DaoFactory.getProductDao().getProduct(productId + "");
+        List<Item> itemList = DaoFactory.getItemDao().getItemByPid(p.getPid());
+        IkeaUtils.sortItemsByPrice(itemList);
+        p.setItemObjs(itemList);
+        return p;
+    }
+
+    public void addTaobaoItem2(Product p, User user) {
+        List<Item> itemList= p.getItemObjs();
+        Item mainItem=itemList.get(0);
+        for (Item item:itemList)
+        {
+            setPicUrlAtTaobao(item,user);
         }
+
+        UserProduct userProduct = new UserProduct();
+        userProduct.setUser(user);
+        List<String> productPics = new ArrayList<String>();
+        userProduct.setPics(productPics);
+        userProduct.setPid(p.getPid());
+
         TaobaoClient client = new DefaultTaobaoClient(Constant.url, Constant.appkey, Constant.appSecret);
         ItemAddRequest req = new ItemAddRequest();
-        req.setNum(Long.valueOf(30L));
-        req.setPrice(p.price);
+        req.setNum(Long.valueOf(100L));
+        req.setPrice(mainItem.getPrice());
         req.setType("fixed");
         req.setStuffStatus("new");
-        req.setTitle(p.title);
-        req.setDesc(p.setDescription());
+        req.setTitle(mainItem.getName() + mainItem.getFacts());
+        req.setDesc(VelocityUtil.generateDescription(p,user));
         req.setLocationState("北京");
         req.setLocationCity("北京");
         req.setApproveStatus("instock");
         req.setCid(Long.valueOf(50006298L));
-
         req.setFreightPayer("buyer");
-
         req.setHasInvoice(Boolean.valueOf(true));
         req.setHasWarranty(Boolean.valueOf(true));
-
-        System.out.println((String) getCCMapFromFile().get(p.subCategoryLocal));
-        req.setSellerCids((String) getCCMapFromFile().get(p.subCategoryLocal));
-        req.setItemWeight(p.virtualWeight);
-
-        if (Constant.nick == "charick") {
-            req.setPostageId(Long.valueOf(755800881L));
-        } else {
-            req.setPostFee("5");
-            req.setExpressFee("5");
-            req.setEmsFee("5");
-        }
-
-        FileItem fItem = new FileItem(new File("E:\\IKEAPIC\\ITEMPICS\\" + ((TOI.model.Item) p.itemsList.get(0)).pid + "-0.jpg"));
-        System.out.println("E:\\IKEAPIC\\ITEMSPIC\\" + ((TOI.model.Item) p.itemsList.get(0)).pid + "-0.jpg");
+        req.setSellerCids( getCCMapFromFile().get(mainItem.getSubCategory()));
+        req.setItemWeight(String.valueOf(mainItem.getWeight()));
+        req.setPostageId(Long.valueOf(user.getTbExpressId()));
+        FileItem fItem = new FileItem(new File(Constant.picPath + (p.itemObjs.get(0)).pid + "-0.jpg"));
         req.setImage(fItem);
-
-        req.setOuterId(p.pid);
+        req.setOuterId(mainItem.pid);
         try {
-            ItemAddResponse response = (ItemAddResponse) client.execute(req, Constant.sessionKey);
+            ItemAddResponse response = client.execute(req, topSession);
             System.out.println(response.getBody());
-            try {
-                JSONObject root = new JSONObject(response.getBody());
-                JSONObject item_add_response = (JSONObject) root.get("item_add_response");
-                JSONObject item = (JSONObject) item_add_response.get("item");
 
-                String num_iid = item.getString("num_iid");
+            JSONObject root = new JSONObject(response.getBody());
+            JSONObject item_add_response = (JSONObject) root.get("item_add_response");
+            JSONObject item = (JSONObject) item_add_response.get("item");
 
-                ProductUtils.updateProductTid(p, num_iid);
-                System.out.println(num_iid.toString());
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+            String num_iid = item.getString("num_iid");
+            userProduct.setTid(num_iid);
+            System.out.println(num_iid.toString());
+            productPics.addAll(uploadExtraPic(p, num_iid));
+        } catch (JSONException e) {
+            e.printStackTrace();
         } catch (ApiException e) {
             e.printStackTrace();
         }
-        System.err.print(p.pid);
-        ProductUtils.updateSingleValue(p.pid, "isChanged", "0");
+        DaoFactory.getUserProductDao().insert(userProduct);
     }
 
-    /**
-     * 获取线上宝贝
-     */
-    public static void getOnlineProducts() {
-        TaobaoClient client = new DefaultTaobaoClient(Constant.url, Constant.appkey, Constant.appSecret);
-        ItemsOnsaleGetRequest req = new ItemsOnsaleGetRequest();
-        req.setFields("num_iid,title,price");
 
-        req.setPageNo(Long.valueOf(1L));
+    public List<String> setPicUrlAtTaobao(Item item, User user) {
+        int count = 0;
+        List<String> picUrls = new ArrayList<String>();
+        StringBuilder picUrlsAtTB = new StringBuilder();
+        for (String url : item.picUrls) {
+            String taobaoUrl = picUpload(new StringBuilder().append(item.pid).append("-").append(count++).toString(), Long.valueOf(user.getTbPicCategoryId()));
+            picUrls.add(taobaoUrl.replace("http://img.taobaocdn.com/imgextra/", ""));
+        }
+        item.setPicUrlsAtTaobao(picUrls);
+        return picUrls;
 
-        req.setOrderBy("list_time:desc");
-        req.setIsTaobao(Boolean.valueOf(true));
+    }
 
-        req.setPageSize(Long.valueOf(200L));
+
+    public String picUpload(String title, Long picCid) {
         try {
-            ItemsOnsaleGetResponse response = (ItemsOnsaleGetResponse) client.execute(req, Constant.sessionKey);
-            System.out.println(response.getTotalResults());
-            System.out.println(response.getItems().get(0));
-            int count = 0;
-            for (com.taobao.api.domain.Item onlineProduct : response.getItems()) {
-                String numId = onlineProduct.getNumIid().toString();
-                String title = onlineProduct.getTitle();
-                if (title.contains(".")) {
-                    int firstDot = title.indexOf(".");
-                    String pid = title.substring(firstDot - 3, firstDot + 7).replace(".", "");
-                    System.out.println(pid);
-                    Product p = new Product(pid);
-                    p.tid = numId;
-                    p.title = title;
-                    ProductUtils.addProductToSQL(p);
-                    count++;
-                }
-            }
-            System.out.println(count);
+            TaobaoClient client = new DefaultTaobaoClient(Constant.url, Constant.appkey, Constant.appSecret);
+            PictureUploadRequest req = new PictureUploadRequest();
+            req.setPictureCategoryId(picCid);
+            File file = new File(Constant.picPath + title + ".jpg");
+            FileItem fItem;
+            if (file.exists())
+                fItem = new FileItem(file);
+            else
+                fItem = new FileItem(Constant.picPath + "noPic.jpg");
+            req.setImg(fItem);
+            req.setImageInputTitle(title + ".jpg");
+            req.setTitle(title);
+            PictureUploadResponse response = (PictureUploadResponse) client.execute(req, topSession);
+            String url = response.getPicture().getPicturePath();
+            System.out.println(response.getPicture().getPicturePath());
+            return url;
         } catch (ApiException e) {
             e.printStackTrace();
         }
+        return null;
     }
 
     /**
      * 更新线上产品
      */
-    public static void updateOnlineItem(Product product) {
-        TaobaoClient client = new DefaultTaobaoClient(Constant.url, Constant.appkey, Constant.appSecret);
-        if (product.tid != null) {
-            ItemUpdateRequest req = new ItemUpdateRequest();
-            req.setNumIid(Long.valueOf(Long.parseLong(product.tid)));
-
-            req.setDesc(product.setDescription());
-
-            req.setSellerCids((String) getCCMapFromFile().get(product.subCategoryLocal));
-            req.setPostageId(Long.valueOf(755800881L));
-
-            req.setItemWeight(product.virtualWeight);
-            try {
-                ItemUpdateResponse response = (ItemUpdateResponse) client.execute(req, Constant.sessionKey);
-                System.out.println(response.getBody());
-            } catch (ApiException e) {
-            }
-        } else {
-            System.err.println("No tid");
-        }
-    }
+//    public static void updateOnlineItem(Product product) {
+//        TaobaoClient client = new DefaultTaobaoClient(Constant.url, Constant.appkey, Constant.appSecret);
+//        if (product.tid != null) {
+//            ItemUpdateRequest req = new ItemUpdateRequest();
+//            req.setNumIid(Long.valueOf(Long.parseLong(product.tid)));
+//
+//            req.setDesc(product.setDescription());
+//
+//            req.setSellerCids((String) getCCMapFromFile().get(product.subCategoryLocal));
+//            req.setPostageId(Long.valueOf(755800881L));
+//
+//            req.setItemWeight(product.virtualWeight);
+//            try {
+//                ItemUpdateResponse response = (ItemUpdateResponse) client.execute(req, Constant.sessionKey);
+//                System.out.println(response.getBody());
+//            } catch (ApiException e) {
+//            }
+//        } else {
+//            System.err.println("No tid");
+//        }
+//    }
 
     private static ArrayList<SellerCid> getSellerCid() {
         ArrayList tbcategories = new ArrayList();
@@ -273,7 +343,7 @@ public class TaobaoUtils {
         }
     }
 
-    public static void getPicCategory(String name) {
+    public void getPicCategory(String name) {
         TaobaoClient client = new DefaultTaobaoClient(Constant.url, Constant.appkey, Constant.appSecret);
         PictureCategoryGetRequest req = new PictureCategoryGetRequest();
 
@@ -281,49 +351,23 @@ public class TaobaoUtils {
 
         req.setParentId(Long.valueOf(-1L));
         try {
-            PictureCategoryGetResponse response = (PictureCategoryGetResponse) client.execute(req, Constant.sessionKey);
+            PictureCategoryGetResponse response = (PictureCategoryGetResponse) client.execute(req, topSession);
             System.out.println(response.getBody());
         } catch (ApiException e) {
             e.printStackTrace();
         }
     }
 
-    public static void uploadExtraPic(Product p) {
-        TaobaoClient client = new DefaultTaobaoClient(Constant.url, Constant.appkey, Constant.appSecret);
-        ItemImgUploadRequest req = new ItemImgUploadRequest();
-
-        for (int i = 1; (i < p.itemsList.size()) && (i < 5); i++) {
-            req.setNumIid(Long.valueOf(Long.parseLong(p.tid)));
-            req.setPosition(Long.valueOf(i));
-
-            FileItem fItem = new FileItem(new File("E:\\IKEAPIC\\ITEMPICS\\" + ((TOI.model.Item) p.itemsList.get(i)).pid + "-0.jpg"));
-
-            System.out.println("E:\\IKEAPIC\\ITEMSPIC\\" + ((TOI.model.Item) p.itemsList.get(i)).pid + "-0.jpg");
-
-            req.setImage(fItem);
-            if (i == 0)
-                req.setIsMajor(Boolean.valueOf(true));
-            else
-                req.setIsMajor(Boolean.valueOf(false));
-            try {
-                ItemImgUploadResponse response = (ItemImgUploadResponse) client.execute(req, Constant.sessionKey);
-                System.out.println(response.getBody());
-            } catch (ApiException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
     public static String WAIT_SELLER_SEND_GOODS = "WAIT_SELLER_SEND_GOODS";//(等待卖家发货,即:买家已付款)
+
     public static String SELLER_CONSIGNED_PART = "SELLER_CONSIGNED_PART";     //卖家部分发货
     public static String WAIT_BUYER_CONFIRM_GOODS = "WAIT_BUYER_CONFIRM_GOODS";     //卖家发货
     public static String TRADE_BUYER_SIGNED = "TRADE_BUYER_SIGNED";     //签收
     public static String TRADE_FINISHED = "TRADE_FINISHED";     //货到付款专用
-
     static class SellerCid {
+
         public String cid;
         public String name;
-
         public boolean equals(Object obj) {
             return ((SellerCid) obj).name.equals(this.name);
         }
@@ -331,8 +375,8 @@ public class TaobaoUtils {
         public String toString() {
             return this.name + "#######" + this.cid;
         }
-    }
 
+    }
     public String topSession;
 
     public TaobaoUtils(String topSession) {
@@ -388,5 +432,87 @@ public class TaobaoUtils {
         } catch (ApiException e) {
             e.printStackTrace();
         }
+    }
+
+
+
+    /**
+     * 获取线上宝贝
+     */
+
+    //    }
+//        ProductUtils.updateSingleValue(p.pid, "isChanged", "0");
+//        System.err.print(p.pid);
+//        }
+//            e.printStackTrace();
+//        } catch (ApiException e) {
+//            }
+//                e.printStackTrace();
+//            } catch (JSONException e) {
+//                System.out.println(num_iid.toString());
+//                ProductUtils.updateProductTid(p, num_iid);
+//
+//                String num_iid = item.getString("num_iid");
+//
+//                JSONObject item = (JSONObject) item_add_response.get("item");
+//                JSONObject item_add_response = (JSONObject) root.get("item_add_response");
+//                JSONObject root = new JSONObject(response.getBody());
+//            try {
+//            System.out.println(response.getBody());
+//            ItemAddResponse response = (ItemAddResponse) client.execute(req, Constant.sessionKey);
+//        try {
+//        req.setOuterId(p.pid);
+//
+//        req.setImage(fItem);
+//        System.out.println("E:\\IKEAPIC\\ITEMSPIC\\" + ((TOI.model.Item) p.itemsList.get(0)).pid + "-0.jpg");
+//        FileItem fItem = new FileItem(new File("E:\\IKEAPIC\\ITEMPICS\\" + ((TOI.model.Item) p.itemsList.get(0)).pid + "-0.jpg"));
+//
+//        }
+//            req.setEmsFee("5");
+//            req.setExpressFee("5");
+//            req.setPostFee("5");
+//        } else {
+//            req.setPostageId(Long.valueOf(755800881L));
+//        if (Constant.nick == "charick") {
+//
+//        req.setItemWeight(p.virtualWeight);
+//        req.setSellerCids((String) getCCMapFromFile().get(p.subCategoryLocal));
+//        System.out.println((String) getCCMapFromFile().get(p.subCategoryLocal));
+//
+//        req.setHasWarranty(Boolean.valueOf(true));
+//        req.setHasInvoice(Boolean.valueOf(true));
+//
+//        req.setFreightPayer("buyer");
+//
+//        req.setCid(Long.valueOf(50006298L));
+//        req.setApproveStatus("instock");
+//        req.setLocationCity("北京");
+//        req.setLocationState("北京");
+//        req.setDesc(p.setDescription());
+//        req.setTitle(p.title);
+//        req.setStuffStatus("new");
+//        req.setType("fixed");
+//        req.setPrice(p.price);
+//        req.setNum(Long.valueOf(30L));
+//        ItemAddRequest req = new ItemAddRequest();
+//        TaobaoClient client = new DefaultTaobaoClient(Constant.url, Constant.appkey, Constant.appSecret);
+//        }
+//            ItemUtils.setPicUrlAtTaobao(item);
+//        for (TOI.model.Item item : p.itemsList) {
+    public static void saveTBcategory2File() {
+        try {
+            ArrayList<SellerCid> tbclist = getSellerCid();
+            FileWriter fw = new FileWriter(new File("tb_category"));
+            for (SellerCid tbCategory : tbclist) {
+                fw.write(tbCategory + "\n");
+            }
+            fw.flush();
+            fw.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println("save taobao category to file finish!");
     }
 }
