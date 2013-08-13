@@ -23,7 +23,7 @@ public class SendOrderServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         ServletContext context = getServletContext();
         request.setCharacterEncoding("UTF-8");
-        String method = request.getParameter("m");
+        String method = request.getParameter("method");
         if ("updateOrderInfo".equals(method)) {//更新发货信息
             updateSendOrderInfos(request, response);
         }
@@ -52,10 +52,6 @@ public class SendOrderServlet extends HttpServlet {
             int status = StringUtils.isBlank(expressCode) ? 1 : 2;
             DaoFactory.getSendOrderDao().updateExpressCode(sendOrderId, expressCode, status);
         }
-    }
-
-    private void getOrderList() {
-
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

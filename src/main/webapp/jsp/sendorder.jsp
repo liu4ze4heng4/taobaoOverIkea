@@ -41,7 +41,9 @@
 <body>
 <%@ include file="top.jsp" %>
 
-<form name="search" action="./sendOrder?m=searchOrder"  method="post">
+<form id="senderOrder" name="senderOrder" action="./sendOrder"  method="post">
+    <input id="method" name="method" value="" type="hidden"/>
+    <input id="orderNum" name="orderNum" value="" type="hidden"/>
     <table width="960" border="0" cellpadding="1" cellspacing="1" bgcolor="#CBD8AC" align="center" class="allge2"     style="margin-top:20px;">
         <tbody><tr bgcolor="#EEF4EA">
             <td align="center">
@@ -76,19 +78,16 @@
                           <td width="160">  <input name="s_keyword" value="<%=StringUtils.isBlank(request.getParameter("s_keyword"))?"":request.getParameter("s_keyword")%>" />     </td>
 
 
-                        <td class="button"><input type="submit" value="搜索" /></td>
+                        <td class="button"><input type="button"  onclick="seachSenderOrder()" value="搜索" /></td>
                     </tr>
                     </tbody></table>
             </td>
         </tr>
         </tbody></table>
-</form>
 
 <%
 List<SendOrder> orders = (List<SendOrder>) request.getAttribute("orders");
 %>
-
-<form name="orderListForm" action="./sendOrder?m=updateOrderInfo&orderNum=<%=orders.size()%>" method="post" >
 
 <table width="960" height="35" border="0" align="center" cellpadding="0" cellspacing="0" class="allge2"
        style="margin-top:20px;">
@@ -97,7 +96,7 @@ List<SendOrder> orders = (List<SendOrder>) request.getAttribute("orders");
         <td> &nbsp;&nbsp;<strong>发货清单</strong></td>
         <td class="button"><input type="button" value="简洁/明细"></td>
          <td class="button"><input type="button" value="打印运单" onClick="PreviewZjs()"> </td>
-          <td class="button"><input type="submit" value="更新发货" /></td>
+          <td class="button"><input type="button"  onclick="updateExpressCode()" value="更新发货" /></td>
     </tr>
     </tbody>
 </table>
@@ -261,6 +260,19 @@ List<SendOrder> orders = (List<SendOrder>) request.getAttribute("orders");
         LODOP.ADD_PRINT_TEXT("109.3mm","129.4mm","17.7mm","5.8mm",(new Date()).toLocaleDateString());
         LODOP.SET_PRINT_STYLEA(0,"FontSize",7);
     }
+
+    function updateExpressCode(){
+        var form1 = window.document.getElementById("senderOrder");//获取form1对象
+        window.document.getElementById("method").value="updateOrderInfo";
+        window.document.getElementById("orderNum").value="<%=orders.size()%>";
+        form1.submit();
+    };
+
+    function seachSenderOrder(){
+        var form1 = window.document.getElementById("senderOrder");//获取form1对象
+        window.document.getElementById("method").value="searchOrder";
+        form1.submit();
+    };
 
 </script>
 </body>
