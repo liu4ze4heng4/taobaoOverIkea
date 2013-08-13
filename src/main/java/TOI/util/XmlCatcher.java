@@ -13,15 +13,15 @@ import java.util.regex.Pattern;
  */
 public class XmlCatcher {
     public static String getItem(String buf) {
-        String name = null;
-        String facts = null;
-        String careInst = null;
-        String custBenefit = null;
-        String designer = null;
-        String environment = null;
-        String goodToKnow = null;
-        String custMaterials = null;
-        String measure = null;
+        String name = " ";
+        String facts = " ";
+        String careInst = " ";
+        String custBenefit = " ";
+        String designer = " ";
+        String environment = " ";
+        String goodToKnow = " ";
+        String custMaterials = " ";
+        String measure = " ";
 
         String regexStr = "<item>[\\s\\S]*?</item>";
         Pattern productCell = Pattern.compile(regexStr);
@@ -145,7 +145,7 @@ public class XmlCatcher {
         String regexStr = "<prices>[\\s\\S]*?</prices>";
         Pattern productCell = Pattern.compile(regexStr);
         Matcher m = productCell.matcher(buf);
-        String price = new String();
+        String price = new String("9999");
         while (m.find()) {
             int beginIx = buf.indexOf("<priceNormal unformatted=\"");
             int endIx = buf.indexOf("\"", beginIx + "<priceNormal unformatted=\"".length());

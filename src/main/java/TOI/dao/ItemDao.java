@@ -1,13 +1,15 @@
 package TOI.dao;
 
 import TOI.model.Item;
+import TOI.model.Product;
 import TOI.util.SQLUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,61 +46,82 @@ public class ItemDao implements ParameterizedRowMapper<Item> {
         item.setCustBenefit(rs.getString("custBenefit"));
         item.setPicUrls(rs.getString("picUrls"));
         item.setType(rs.getString("type"));
+        item.setProductId(rs.getInt("productId"));
+        item.setWeight(rs.getFloat("weight"));
+        item.setCategory(rs.getString("category"));
+        item.setSubCategory(rs.getString("subCategory"));
+
 
         return item;
     }
-    public void insertItem(Item item)
+    public void insertItem(final Item item)
     {
-        String sql = new StringBuilder().append("insert into item_charick").append("(pid,name,facts,price,assembledSize,designer,environment,goodToKnow,").append("careInst,")
-                .append("custMaterials,custBenefit,picUrls,modifyTime,type) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)").toString();
-        try
-        {
-            PreparedStatement stmt = SQLUtils.getConnection().prepareStatement(sql);
-            stmt.setString(1, item.pid);
-            stmt.setString(2, item.name);
-            stmt.setString(3, item.facts);
-            stmt.setString(4, item.price);
-            stmt.setString(5, item.assembledSize);
-            stmt.setString(6, item.designer);
-            stmt.setString(7, item.environment);
-            stmt.setString(8, item.goodToKnow);
-            stmt.setString(9, item.careInst);
-            stmt.setString(10, item.custMaterials);
-            stmt.setString(11, item.custBenefit);
-            StringBuilder picUrls = new StringBuilder();
-            ArrayList PicIds = item.picUrls;
-            for (int i = 0; i < PicIds.size(); i++) {
-                String picId = (String)PicIds.get(i);
-                picUrls.append(picId);
-                if (i != PicIds.size() - 1)
-                    picUrls.append(",");
-            }
-            stmt.setString(12, picUrls.toString());
-            stmt.setTimestamp(13, SQLUtils.getCurrentDateStr());
-            stmt.setString(14, item.type);
+        final String sql = new StringBuilder().append("insert into item").append("(pid,name,facts,price,assembledSize,designer,environment,goodToKnow,").append("careInst,")
+                .append("custMaterials,custBenefit,picUrls,type,productId,weight,category,subCategory) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)").toString();
 
-            stmt.execute();
-            System.out.println(new StringBuilder().append("ITEM:").append(item.pid).append("已添加！").toString());
+        ikeaTemplate.update(new PreparedStatementCreator() {
+            public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
+                PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                stmt.setString(1, item.pid);
+                stmt.setString(2, item.name);
+                stmt.setString(3, item.facts);
+                stmt.setString(4, item.price);
+                stmt.setString(5, item.assembledSize);
+                stmt.setString(6, item.designer);
+                stmt.setString(7, item.environment);
+                stmt.setString(8, item.goodToKnow);
+                stmt.setString(9, item.careInst);
+                stmt.setString(10, item.custMaterials);
+                stmt.setString(11, item.custBenefit);
+                stmt.setString(12, item.getPicUrlss());
+                stmt.setString(13, item.type);
+                stmt.setInt(14, item.getProductId());
+            stmt.setFloat(15,item.getWeight());
+            stmt.setString(16,item.getCategory());
+            stmt.setString(17,item.getSubCategory());
+                return stmt;
+            }
+        });
+
+
+    }
+    public int updateItem(final Item item)
+    {
+        final String sql = new StringBuilder().append("update item ").append("set name=?,facts=?,price=?,assembledSize=?,designer=?,environment=?,goodToKnow=?,careInst=?,")
+                .append("custMaterials=?,custBenefit=?,picUrls=?,type=?,weight=?,category=?,subCategory=? where pid= ?").toString();
+
+        int result=ikeaTemplate.update(sql, new Object[] {item.getName(),item.getFacts(),item.getPrice(),item.getAssembledSize(),item.getDesigner(),item.getEnvironment(),item.getGoodToKnow(),item.getCareInst(),item.getCustMaterials(),item.getCustBenefit(),item.getPicUrlss(),item.getType(),item.getWeight(),item.getCategory(),item.getSubCategory(),item.getPid()});
+        return result;
+
+
+
+    }
+
+    public Item getItemByIid(String id) {
+        String sql = "select  * from  item where pid= ? ";
+        List<Item> mediaUserScopeList = ikeaTemplate.query(sql, new Object[] { id }, this);
+        if (mediaUserScopeList != null && mediaUserScopeList.size() > 0) {
+            return mediaUserScopeList.get(0);
         }
-        catch (SQLException e) {
-            System.out.println(new StringBuilder().append("=========SQLException==========").append(e.getMessage()).toString());
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            System.out.println(new StringBuilder().append("========ClassNotFoundException===========").append(e.getMessage()).toString());
-            e.printStackTrace();
-        } catch (Exception e) {
-            System.out.println(new StringBuilder().append("========Exception===========未知").append(e.getMessage()).toString());
-            e.printStackTrace();
+        return null;
+    }
+
+    public List<Item> getItemByPid(int id) {
+        String sql = "select  * from  item where productId= ? ";
+        List<Item> mediaUserScopeList = ikeaTemplate.query(sql, new Object[]{id}, this);
+        if (mediaUserScopeList != null && mediaUserScopeList.size() > 0) {
+            return mediaUserScopeList;
         }
+        return null;
     }
 
     public int check(Item item) {
         String id=item.getPid();
         List<Item> items=new ArrayList<Item>();
-        String sql=     "SELECT * FROM item_charick WHERE pid = " + id ;
+        String sql=     "SELECT * FROM item WHERE pid = ?" ;
         try {
             items=ikeaTemplate.query(sql, new Object[] { id }, this);
-            if(items.size()>1){
+            if(items.size()>0){
                 System.out.println("item【"+id+"】重复");
             }
         } catch (Exception e) {

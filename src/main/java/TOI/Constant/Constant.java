@@ -23,7 +23,7 @@ public class Constant {
     public static String nick = "charick";
     public static String sessionKey="6101e179fcef6feeb81d05d331a2bae22805b45d2e558ba42635718";
     public static String vm="productDetail.vm";
-    public static String product_sql="product_charick";
+    public static String product_sql="product";
     public static String item_sql="item_charick";
 
 //    public static String nick = "zhangtiqiu5673881";

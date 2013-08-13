@@ -43,4 +43,20 @@
           scope="singleton">
         <property name="ikeaTemplate" ref="ikeaTemplate" />
     </bean>
+    <bean id="productDao"
+          class="TOI.dao.ProductDao"
+          scope="singleton">
+        <property name="ikeaTemplate" ref="ikeaTemplate" />
+    </bean>
+    <bean id="userProductDao"
+          class="TOI.dao.UserProductDao"
+          scope="singleton">
+        <property name="ikeaTemplate" ref="ikeaTemplate" />
+    </bean>
+
+    <bean id="userDao"
+          class="TOI.dao.UserDao"
+          scope="singleton">
+        <property name="ikeaTemplate" ref="ikeaTemplate" />
+    </bean>
 </beans>

@@ -7,6 +7,7 @@ import TOI.util.XmlCatcher;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 public class Item
 {
@@ -26,9 +27,37 @@ public class Item
     public float weight;
     public float size;
     public ArrayList<String> picUrls = new ArrayList();
-    public ArrayList<String> picUrlsAtTaobao = new ArrayList();
+    public List<String> picUrlsAtTaobao = new ArrayList();
     public String type;
-    public String colorCode;
+    public String colorCode="#000000";
+    public int productId;
+    public String category;
+
+    public String getSubCategory() {
+        return subCategory;
+    }
+
+    public void setSubCategory(String subCategory) {
+        this.subCategory = subCategory;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String subCategory;
+
+    public int getProductId() {
+        return productId;
+    }
+
+    public void setProductId(int productId) {
+        this.productId = productId;
+    }
 
     public void setPid(String pid) {
         this.pid = pid;
@@ -94,11 +123,11 @@ public class Item
         Collections.addAll(this.picUrls, picUrls.split(","));
     }
 
-    public ArrayList<String> getPicUrlsAtTaobao() {
+    public List<String> getPicUrlsAtTaobao() {
         return picUrlsAtTaobao;
     }
 
-    public void setPicUrlsAtTaobao(ArrayList<String> picUrlsAtTaobao) {
+    public void setPicUrlsAtTaobao(List<String> picUrlsAtTaobao) {
         this.picUrlsAtTaobao = picUrlsAtTaobao;
     }
 
@@ -194,6 +223,17 @@ public class Item
         return this.picUrls;
     }
 
+    public String getPicUrlss(){
+StringBuilder result=new StringBuilder();
+        for (int i = 0; i < picUrls.size(); i++) {
+            String picId = (String)picUrls.get(i);
+            result.append(picId);
+            if (i != picUrls.size() - 1)
+                result.append(",");
+        }
+        return result.toString();
+    }
+
     public String getType() {
         return this.type;
     }
@@ -206,7 +246,7 @@ public class Item
     {
         return (String)this.picUrlsAtTaobao.get(i);
     }
-    public ArrayList<String> getTbPICs() {
+    public List<String> getTbPICs() {
         return this.picUrlsAtTaobao;
     }
 
@@ -215,36 +255,36 @@ public class Item
         this.pid = id;
     }
 
-    public void initItemFromIKEA(String id) {
-        try {
-            String buf = HtmlUtil.getHtmlContent("http://www.ikea.com/cn/zh/catalog/products/" + id + "?type=xml&dataset=normal,prices,allimages,parentCategories");
-            int count = 0;
-            while ((buf.contains("<URL>") != true) && (count < 10)) {
-                buf = HtmlUtil.getHtmlContent("http://www.ikea.com/cn/zh/catalog/products/" + id + "?type=xml&dataset=normal,prices,allimages,parentCategories");
-
-                count++;
-            }
-            String info = XmlCatcher.getItem(buf);
-            String[] infos = info.split("!!");
-
-            this.name = infos[0];
-            this.facts = infos[1];
-            this.price = XmlCatcher.getPrice(buf);
-            this.assembledSize = infos[8];
-            this.designer = infos[4];
-            this.environment = infos[5];
-            this.goodToKnow = infos[6];
-            this.careInst = infos[2];
-            this.custBenefit = infos[3];
-            this.custMaterials = infos[7];
-            this.picUrls = XmlCatcher.getPicUrl(buf);
-            ItemUtils.savePicToLocal(this);
-
-            System.out.println("initItemFromIKEA " + buf + " " + this.name + " " + this.price);
-        } catch (IOException ie) {
-            System.err.println("initItemFromIKEA " + this.name + this.price);
-        }
-    }
+//    public void initItemFromIKEA(String id) {
+//        try {
+//            String buf = HtmlUtil.getHtmlContent("http://www.ikea.com/cn/zh/catalog/products/" + id + "?type=xml&dataset=normal,prices,allimages,parentCategories");
+//            int count = 0;
+//            while ((buf.contains("<URL>") != true) && (count < 10)) {
+//                buf = HtmlUtil.getHtmlContent("http://www.ikea.com/cn/zh/catalog/products/" + id + "?type=xml&dataset=normal,prices,allimages,parentCategories");
+//
+//                count++;
+//            }
+//            String info = XmlCatcher.getItem(buf);
+//            String[] infos = info.split("!!");
+//
+//            this.name = infos[0];
+//            this.facts = infos[1];
+//            this.price = XmlCatcher.getPrice(buf);
+//            this.assembledSize = infos[8];
+//            this.designer = infos[4];
+//            this.environment = infos[5];
+//            this.goodToKnow = infos[6];
+//            this.careInst = infos[2];
+//            this.custBenefit = infos[3];
+//            this.custMaterials = infos[7];
+//            this.picUrls = XmlCatcher.getPicUrl(buf);
+//            ItemUtils.savePicToLocal(this);
+//
+//            System.out.println("initItemFromIKEA " + buf + " " + this.name + " " + this.price);
+//        } catch (IOException ie) {
+//            System.err.println("initItemFromIKEA " + this.name + this.price);
+//        }
+//    }
 
     public void setWeight()
     {
