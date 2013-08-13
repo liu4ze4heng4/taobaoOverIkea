@@ -49,9 +49,9 @@ public class SendOrder {
 
     public String getStatusDep(){
          if(status==1){
-             return  "<font color='blue'>已付款，等待发货</font>";
+             return  "<font color='blue'>未发货</font>";
          }else if(status==2){
-             return  "<font color='green'>已经发货</font>";
+             return  "<font color='green'>已发货</font>";
          }else {
              return  "<font color='red'>异常</font>";
          }

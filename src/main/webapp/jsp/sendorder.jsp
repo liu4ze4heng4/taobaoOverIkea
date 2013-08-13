@@ -1,10 +1,13 @@
 <%@ page contentType="text/html;charset=utf-8" %>
 <%@ page import="TOI.model.SendOrder,java.util.*" %>
+<%@ page import="org.apache.commons.lang.StringUtils" %>
+
 <html>
 <head>
     <title>发货清单-趣活宜家代购联盟</title>
     <link href="./css/css.css" rel="stylesheet" type="text/css">
     <link href="./css/style.css" rel="stylesheet" type="text/css">
+    <script src="./js/date.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
     <script language="javascript" src="http://mtsoftware.v053.gokao.net/samples/LodopFuncs.js"></script>
     <object id="LODOP_OB" classid="clsid:2105C259-1E0C-4534-8141-A753534CB4CA" width=0 height=0>
@@ -37,6 +40,50 @@
 </head>
 <body>
 <%@ include file="top.jsp" %>
+
+<form name="search" action="./sendOrder?m=searchOrder"  method="post">
+    <table width="960" border="0" cellpadding="1" cellspacing="1" bgcolor="#CBD8AC" align="center" class="allge2"     style="margin-top:20px;">
+        <tbody><tr bgcolor="#EEF4EA">
+            <td align="center">
+                <table border="0" cellpadding="0" cellspacing="0">
+                    <tbody>
+                      <tr>
+                          <td width="90" align="center">发货状态:</td>
+                          <td width="80">
+                              <% int status=StringUtils.isBlank(request.getParameter("s_status"))?0:Integer.valueOf(request.getParameter("s_status"));%>
+                              <select name="s_status" style="width:80">
+                                  <option value="0"    <% if(status==0) { %>  selected="selected"  <% }%>  >全部</option>
+                                  <option value="1"    <% if(status==1) { %>  selected="selected"  <% }%>  >未发货</option>
+                                  <option value="2"    <% if(status==2) { %>  selected="selected"  <% }%>  >已发货</option>
+                              </select>
+                          </td>
+                        <td width="90" align="center">物流公司:</td>
+                        <td width="80">
+                            <% int s_express=StringUtils.isBlank(request.getParameter("s_express"))?0:Integer.valueOf(request.getParameter("s_express"));%>
+                            <select name="s_express" style="width:80">
+                                <option value="0"    <% if(s_express==0) { %>  selected="selected"  <% }%>  >全部</option>
+                                <option value="1"    <% if(s_express==1) { %>  selected="selected"  <% }%> >宅急送</option>
+                                <option value="2"    <% if(s_express==2) { %>  selected="selected"  <% }%> >优速</option>
+                                <option value="3"    <% if(s_express==3) { %>  selected="selected"  <% }%> >德邦</option>
+                                <option value="4"    <% if(s_express==4) { %>  selected="selected"  <% }%> >中铁</option>
+                            </select>
+                        </td>
+
+                          <td width="90" align="center">时间:</td>
+                          <td width="90"> <input name="s_date" type="text" id="control_date" size="10" maxlength="90" onclick="new Calendar().show(this);" readonly="readonly"  value="<%=StringUtils.isBlank((String)request.getAttribute("s_date"))?"":(String)request.getAttribute("s_date")%>" />    </td>
+
+                          <td width="90" align="center">关键词:</td>
+                          <td width="160">  <input name="s_keyword" value="<%=StringUtils.isBlank(request.getParameter("s_keyword"))?"":request.getParameter("s_keyword")%>" />     </td>
+
+
+                        <td class="button"><input type="submit" value="搜索" /></td>
+                    </tr>
+                    </tbody></table>
+            </td>
+        </tr>
+        </tbody></table>
+</form>
+
 <%
 List<SendOrder> orders = (List<SendOrder>) request.getAttribute("orders");
 %>

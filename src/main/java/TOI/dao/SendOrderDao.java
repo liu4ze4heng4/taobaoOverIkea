@@ -1,6 +1,7 @@
 package TOI.dao;
 
 import TOI.model.SendOrder;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
@@ -8,7 +9,9 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
 import java.sql.*;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class SendOrderDao implements ParameterizedRowMapper<SendOrder> {
 	public JdbcTemplate ikeaTemplate;
@@ -100,4 +103,22 @@ public class SendOrderDao implements ParameterizedRowMapper<SendOrder> {
 		}
 		return id > 0 ? id : 0;
 	}
+
+    public   List<SendOrder> searchSendOrder(int status, int expressId, String keyWord, String date){
+        String sql= "select * from user_sendorder ";
+
+        StringBuilder whereProperty=new StringBuilder();
+        boolean has=false;
+        if(status>0){ whereProperty.append(" status="+status); has=true;}
+        if(expressId>0)  { whereProperty.append(has?" and ":" ").append(" express_id="+expressId); has=true;}
+        if(StringUtils.isNotBlank(keyWord)){
+            whereProperty.append(has?" and ":" ").append(" trade_memo like '%"+keyWord+"%' ");
+        }
+        whereProperty.append(has?" and ":" ").append(" pay_time>'"+date +"' and pay_time<date_sub('"+date+"',interval -1 day)" );
+        if(StringUtils.isNotBlank(whereProperty.toString())){
+            sql=sql+" where "+whereProperty.toString() ;
+        }
+        List<SendOrder> mediaUserScopeList = ikeaTemplate.query(sql, this);
+        return mediaUserScopeList;
+    }
 }
