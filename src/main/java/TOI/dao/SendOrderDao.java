@@ -121,7 +121,6 @@ public class SendOrderDao implements ParameterizedRowMapper<SendOrder> {
         if(expressId>0)  { whereProperty.append(has?" and ":" ").append(" express_id="+expressId); has=true;}
         if(StringUtils.isNotBlank(keyWord)){
             whereProperty.append(has?" and ":" ").append(" trade_memo like '%"+keyWord+"%' ");
-            has=true;
         }
         whereProperty.append(has?" and ":" ").append(" pay_time>'"+date +"' and pay_time<'"+endDate+"'");
         if(StringUtils.isNotBlank(whereProperty.toString())){
