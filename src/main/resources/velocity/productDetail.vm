@@ -71,7 +71,7 @@
 		<div style="float:left;width: 150.0px;overflow:hidden;margin-top: 20px;">
 				<div style="font-size: 14.0px;text-align:center;line-height:24px;">￥ $itemList.get(0).price
 				<br>ID : ${itemList.get($0).pid}
-#if($itemList.get($0).designer!="null")	
+#if($itemList.get($0).designer!=" ")	
 				<br>
 	<span style="font-size:12px;">By ${itemList.get($0).designer}
 #end
@@ -86,25 +86,25 @@
 </div>
 
 <div style="width:475.0px;margin: 10px 0px 0px 20px;float:left;font-size:12.0px;line-height:24px;font-family:simsun;">	
-#if($itemList.get($0).custBenefit!="null")	
+#if($itemList.get($0).custBenefit!=" ")	
 	<div style="float:left;width:475.0px;border-bottom:1px solid #ededed;font-family:microsoft yahei;">
 	<img src="http://img01.taobaocdn.com/imgextra/i1/42635718/T2Xg2.XbXaXXXXXXXX_!!42635718.png" style="float:left;">
 	<span style="font-size:18px;">属性</span><span style="font-size:12px;">info</span></div>
 	<div style="float:left;width: 475.0px;color:#7a7a7a;margin:10px;">${itemList.get($0).custBenefit}</div>		
 #end
-#if($itemList.get($0).assembledSize!="null")	
+#if($itemList.get($0).assembledSize!=" ")	
 	<div style="float:left;width:475.0px;border-bottom:1px solid #ededed;font-family:microsoft yahei;">
 	<img src="http://img02.taobaocdn.com/imgextra/i2/42635718/T2re_dXfFbXXXXXXXX_!!42635718.png" style="float:left;">
 	<span style="font-size:18px;">尺寸</span><span style="font-size:12px;">size</span></div>
 	<div style="float:left;width: 475.0px;color:#7a7a7a;margin:10px;">${itemList.get($0).assembledSize.replace("<br>",",")}</div>	
 #end
-#if($itemList.get($0).goodToKnow!="null")	
+#if($itemList.get($0).goodToKnow!=" ")	
 	<div style="float:left;width:475.0px;border-bottom:1px solid #ededed;font-family:microsoft yahei;">
 	<img src="http://img02.taobaocdn.com/imgextra/i2/42635718/T2MDC1XeVbXXXXXXXX_!!42635718.png" style="float:left;">
 	<span style="font-size:18px;">提示</span><span style="font-size:12px;">tips</span></div>
 	<div style="float:left;width: 475.0px;color:#7a7a7a;margin:10px;">${itemList.get($0).goodToKnow}</div>  	
 #end
-#if($itemList.get($0).careInst!="null")	
+#if($itemList.get($0).careInst!=" ")	
 	<div style="float:left;width:475.0px;border-bottom:1px solid #ededed;font-family:microsoft yahei;">
 	<img src="http://img04.taobaocdn.com/imgextra/i4/42635718/T2QIsiXaVaXXXXXXXX_!!42635718.png" style="float:left;">
 	<span style="font-size:18px;">保养</span><span style="font-size:12px;">care</span></div>
@@ -116,7 +116,7 @@
 	<span style="font-size:18px;">材质</span><span style="font-size:12px;">materials</span></div>
 	<div style="float:left;width: 475.0px;color:#7a7a7a;margin:10px;">${itemList.get($0).custMaterials}</div>  
 #end
-#if($itemList.get($0).environment!="null")	
+#if($itemList.get($0).environment!=" ")	
 	<div style="float:left;width:475.0px;border-bottom:1px solid #ededed;font-family:microsoft yahei;">
 	<img src="http://img01.taobaocdn.com/imgextra/i1/42635718/T2jDVbXbpOXXXXXXXX_!!42635718.png" style="float:left;">
 	<span style="font-size:18px;">环保</span><span style="font-size:12px;">environment</span></div>
@@ -141,19 +141,19 @@
 
 </div>
 #if($null.isNotNull($itemList) && $itemList.size()>0)
-#if($null.isNotNull($itemList) && $itemList.size()>0 && $itemList.get($0).custBenefit!="null")
+#if($null.isNotNull($itemList) && $itemList.size()>0 && $itemList.get($0).custBenefit!=" ")
 	<div style="float:left;width:600.0px;border-bottom:1px solid #ededed;font-family:microsoft yahei;">
 	<img src="http://img01.taobaocdn.com/imgextra/i1/42635718/T2Xg2.XbXaXXXXXXXX_!!42635718.png" style="float:left;">
 	<span style="font-size:18px;">属性</span><span style="font-size:12px;">info</span></div>
 	<div style="float:left;color:#7a7a7a;margin:10px;">${itemList.get($0).custBenefit}</div>		
 #end
-#if($itemList.get($0).goodToKnow!="null")	
+#if($itemList.get($0).goodToKnow!=" ")	
 	<div style="float:left;width:600.0px;border-bottom:1px solid #ededed;font-family:microsoft yahei;">
 	<img src="http://img02.taobaocdn.com/imgextra/i2/42635718/T2re_dXfFbXXXXXXXX_!!42635718.png" style="float:left;">
 	<span style="font-size:18px;">提示</span><span style="font-size:12px;">tips</span></div>
 	<div style="float:left;color:#7a7a7a;margin:10px;">${itemList.get($0).goodToKnow}</div>  	
 #end
-#if($itemList.get($0).careInst!="null")	
+#if($itemList.get($0).careInst!=" ")	
 	<div style="float:left;width:600.0px;border-bottom:1px solid #ededed;font-family:microsoft yahei;">
 	<img src="http://img04.taobaocdn.com/imgextra/i4/42635718/T2QIsiXaVaXXXXXXXX_!!42635718.png" style="float:left;">
 	<span style="font-size:18px;">保养</span><span style="font-size:12px;">care</span></div>
@@ -165,7 +165,7 @@
 	<span style="font-size:18px;">材质</span><span style="font-size:12px;">materials</span></div>
 	<div style="float:left;color:#7a7a7a;margin:10px;">${itemList.get($0).custMaterials}</div>  
 #end
-#if($itemList.get($0).environment!="null")	
+#if($itemList.get($0).environment!=" ")	
 	<div style="float:left;width:600.0px;border-bottom:1px solid #ededed;font-family:microsoft yahei;">
 	<img src="http://img01.taobaocdn.com/imgextra/i1/42635718/T2jDVbXbpOXXXXXXXX_!!42635718.png" style="float:left;">
 	<span style="font-size:18px;">环保</span><span style="font-size:12px;">environment</span></div>

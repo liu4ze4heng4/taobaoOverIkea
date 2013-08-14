@@ -120,8 +120,13 @@ public class TaobaoUtils {
 
     public void updateTaobaoItem(Product p,User user)
     {
-    Item mainItem=p.getItemObjs().get(0);
-    int pid=p.getPid();
+        List<Item> itemList= p.getItemObjs();
+        Item mainItem=itemList.get(0);
+        for (Item item:itemList)
+        {
+            setPicUrlAtTaobao(item,user);
+        }
+        int pid=p.getPid();
     int userId=user.getId();
     String tid=DaoFactory.getUserProductDao().getUserProduct(userId,pid).getTid();
         TaobaoClient client = new DefaultTaobaoClient(Constant.url, Constant.appkey, Constant.appSecret);
