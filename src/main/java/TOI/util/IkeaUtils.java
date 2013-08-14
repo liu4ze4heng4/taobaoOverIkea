@@ -5,7 +5,7 @@ import TOI.dao.DaoFactory;
 import TOI.model.Item;
 import TOI.model.Product;
 
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -209,6 +209,18 @@ public class IkeaUtils {
     }
 
     public static void main(String[] args) {
+        try {
+            FileInputStream fileInputStream=new FileInputStream(new File("/Users/Wk/Downloads/灯具.txt"));
+            InputStreamReader inputStreamReader=new InputStreamReader(fileInputStream);
+            BufferedReader bufferedReader=new BufferedReader(inputStreamReader);
+            String id;
+            while(!(id=bufferedReader.readLine()).isEmpty())
+                IkeaUtils.grabProductFromIKEA(id);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (IOException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
         IkeaUtils.grabProductFromIKEA("80179433");
     }
 }
