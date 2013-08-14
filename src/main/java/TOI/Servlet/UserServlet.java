@@ -16,11 +16,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-public class UserServlet extends BaseServlet {
+public class UserServlet extends HttpServlet {
     private static String loginPage = "/jsp/login.jsp";
     private static String homePage = "/jsp/index.jsp";
 
-    protected void excute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
         request.setCharacterEncoding("UTF-8");
         String method=request.getParameter("method");
         ServletContext context = getServletContext();
@@ -44,9 +44,14 @@ public class UserServlet extends BaseServlet {
                 }
             }
         } else if("loginout".equals(method)){
-
+            request.getSession().removeAttribute("user");
+            RequestDispatcher dispatcher = context.getRequestDispatcher(loginPage);
+            dispatcher.forward(request, response);
         }
 
+    }
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        doPost(request, response);
     }
 
 

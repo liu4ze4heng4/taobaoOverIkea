@@ -1,4 +1,3 @@
-<%@ page import="" %>
 <%@ page import="TOI.model.User" %>
 <%@ page contentType="text/html;charset=utf-8" %>
 
@@ -8,7 +7,7 @@
         <td height="80"><img src="/IPS/images/logo.png" width="400" height="67"></td>
         <%
             User user= (User) request.getSession().getAttribute("user");
-            String userName= (user==?)"":"welcome" +user.getName() ;
+            String userName= (user==null)?"":user.getName() ;
         %>
         <td height="80"><%=userName%>  <a href='/IPS/user?method=loginout'>[注销]</a></td>
     </tr>
