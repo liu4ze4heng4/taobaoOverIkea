@@ -5,8 +5,8 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>【趣活】</title>
     <%--<link href="/tb/css/reset.css" rel="stylesheet" type="text/css">--%>
-    <link href="/css/css.css" rel="stylesheet" type="text/css">
-    <link href="/css/style.css" rel="stylesheet" type="text/css">
+    <link href="/IPS/css/css.css" rel="stylesheet" type="text/css">
+    <link href="/IPS/css/style.css" rel="stylesheet" type="text/css">
     <%--<script type="text/javascript" src="/tb/js/jquery-1.8.2.min.js"></script>--%>
     <%--<script type="text/javascript" src="/tb/js/common.js"></script>--%>
     <style type="text/css">

@@ -40,6 +40,42 @@ public class TradeItem
         return this.name;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public void setPicUrl(String picUrl) {
+        this.picUrl = picUrl;
+    }
+
+    public void setStockInfo(String stockInfo) {
+        this.stockInfo = stockInfo;
+    }
+
+    public void setStockInfoCode(int stockInfoCode) {
+        this.stockInfoCode = stockInfoCode;
+    }
+
+    public void setTotal(int total) {
+        this.total = total;
+    }
+
+    public void setFacts(String facts) {
+        this.facts = facts;
+    }
+
     public String getType() {
         return this.type;
     }

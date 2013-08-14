@@ -3,13 +3,8 @@
 <table width="960" border="0" align="center" cellpadding="0" cellspacing="0">
     <tbody>
     <tr>
-        <td height="80"><img src="./images/top/left_head.gif" width="400" height="67"></td>
-        <td align="right">
-            <br><br>
-            <a target="_blank"
-               href="http://fuwu.taobao.com/ser/detail.htm?spm=a1z13.1113649.0.223.LsJI4d&amp;service_code=ts-1803962&amp;tracelog=renew"
-               style="color:#006600">续订</a>&nbsp;&nbsp;&nbsp;&nbsp;<a id="chargeNow" href="javascript:void(0);"
-                                                                      style="color:#006600">充值</a>&nbsp;&nbsp;</td>
+        <td height="80"><img src="/IPS/images/logo.png" width="400" height="67"></td>
+
     </tr>
     </tbody>
 </table>
@@ -23,27 +18,27 @@
                 <tbody>
                 <tr>
                     <td width="2" align="center" onmouseover="this.style.background='#69B310'"
-                        onmouseout="this.style.background='#5BA707'"><img src="./images/other/split.jpg"></td>
+                        onmouseout="this.style.background='#5BA707'"><img src="/IPS/images/other/split.jpg"></td>
                     <td width="135" align="center" onmouseover="this.style.background='#69B310'"
                         onmouseout="this.style.background='#5BA707'"
                         style="background-color: rgb(91, 167, 7); background-position: initial initial; background-repeat: initial initial;">
-                        <a href="/jsp/index.jsp" class="a1">首页</a></td>
+                        <a href="/IPS/jsp/index.jsp" class="a1">首页</a></td>
                     <td width="2" align="center" onmouseover="this.style.background='#69B310'"
-                        onmouseout="this.style.background='#5BA707'"><img src="./images/other/split.jpg"></td>
+                        onmouseout="this.style.background='#5BA707'"><img src="/IPS/images/other/split.jpg"></td>
                     <td width="135" align="center" onmouseover="this.style.background='#69B310'"
-                        onmouseout="this.style.background='#5BA707'"><a href="jsp/userInfo.jsp" class="a1">用户信息</a>
+                        onmouseout="this.style.background='#5BA707'"><a href="/IPS/jsp/userInfo.jsp" class="a1">用户信息</a>
                     </td>
                     <td width="2" align="center" onmouseover="this.style.background='#69B310'"
-                        onmouseout="this.style.background='#5BA707'"><img src="./images/other/split.jpg"></td>
+                        onmouseout="this.style.background='#5BA707'"><img src="/IPS/images/other/split.jpg"></td>
                     <td width="135" align="center" onmouseover="this.style.background='#69B310'"
-                        onmouseout="this.style.background='#5BA707'"><a href="/jsp/product.jsp" class="a1">上传宝贝</a></td>
+                        onmouseout="this.style.background='#5BA707'"><a href="/IPS/jsp/product.jsp" class="a1">上传宝贝</a></td>
                     <td width="2" align="center" onmouseover="this.style.background='#69B310'"
-                        onmouseout="this.style.background='#5BA707'"><img src="./images/other/split.jpg"></td>
+                        onmouseout="this.style.background='#5BA707'"><img src="/IPS/images/other/split.jpg"></td>
                     <td width="135" align="center" onmouseover="this.style.background='#69B310'"
-                        onmouseout="this.style.background='#5BA707'"><a href="./sendOrder" class="a1">发货清单</a>
+                        onmouseout="this.style.background='#5BA707'"><a href="/IPS/sendOrder" class="a1">发货清单</a>
                     </td>
                     <td width="2" align="center" onmouseover="this.style.background='#69B310'"
-                        onmouseout="this.style.background='#5BA707'"><img src="./images/other/split.jpg"></td>
+                        onmouseout="this.style.background='#5BA707'"><img src="/IPS/images/other/split.jpg"></td>
                     <td width="135" align="center">&nbsp;</td>
                     <td width="135" align="center">&nbsp;</td>
                 </tr>
