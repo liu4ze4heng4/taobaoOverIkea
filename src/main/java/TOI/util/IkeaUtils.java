@@ -107,53 +107,60 @@ public class IkeaUtils {
         List<String> cates = IkeaUtils.getCategory(buf);
         Map<String, String> map = IkeaUtils.getItemTypes(buf);
         Set<String> idSet = map.keySet();
-        if (!idSet.isEmpty()){
-        Iterator<String> iterator = idSet.iterator();
+        if (!idSet.isEmpty()) {
+            Iterator<String> iterator = idSet.iterator();
 
-        while (iterator.hasNext()) {
-            Item item = new Item();
-            item.setPid(iterator.next());
-            item.setType(map.get(item.pid));
-            item.setCategory(cates.get(0));
-            item.setSubCategory(cates.get(1));
-            initItemFromIKEA(item);
-            item.setWeight(IkeaStockUtil.WeightCatcher(item.getPid()));
-            items.add(item);
-        }      }
-        else  {
+            while (iterator.hasNext()) {
+                Item item = new Item();
+                item.setPid(iterator.next());
+                item.setType(map.get(item.pid));
+                item.setCategory(cates.get(0));
+                item.setSubCategory(cates.get(1));
+                initItemFromIKEA(item);
+                if (item == null) {
+                    System.err.println(item.getPid());
+                    continue;
+                }
+                item.setWeight(IkeaStockUtil.WeightCatcher(item.getPid()));
+                items.add(item);
+            }
+        } else {
             Item item = new Item();
             item.setPid(id);
 //            item.setType();
             item.setCategory(cates.get(0));
             item.setSubCategory(cates.get(1));
-            initItemFromIKEA(item);
+            item = initItemFromIKEA(item);
+            if (item == null) {
+                System.err.println(item.getPid());
+                return;
+            }
             item.setWeight(IkeaStockUtil.WeightCatcher(item.getPid()));
             items.add(item);
         }
 
 
+        if (DaoFactory.getItemDao().check(items.get(0)) != 0) {
+            p.setPid(DaoFactory.getItemDao().getItemByIid(items.get(0).getPid()).getProductId());
+            DaoFactory.getProductDao().updateProduct(p);
+        } else
+            p.setPid(DaoFactory.getProductDao().insert(p));
 
-        if( DaoFactory.getItemDao().check(items.get(0)) != 0)
-        {  p.setPid(DaoFactory.getItemDao().getItemByIid(items.get(0).getPid()).getProductId());
-            DaoFactory.getProductDao().updateProduct(p);   }
-        else
-                p.setPid(DaoFactory.getProductDao().insert(p));
-
-            for (int i = 0; i < items.size(); i++) {
-                Item item = items.get(i);
-               if( DaoFactory.getItemDao().check(items.get(i)) == 0)
-               { item.setProductId(p.getPid());
-                DaoFactory.getItemDao().insertItem(item); }
-               else {
-                   DaoFactory.getItemDao().updateItem(item);
-                   System.out.println("update item");}
+        for (int i = 0; i < items.size(); i++) {
+            Item item = items.get(i);
+            if (DaoFactory.getItemDao().check(items.get(i)) == 0) {
+                item.setProductId(p.getPid());
+                DaoFactory.getItemDao().insertItem(item);
+            } else {
+                DaoFactory.getItemDao().updateItem(item);
+                System.out.println("update item");
             }
-
+        }
 
 
     }
 
-    public static void initItemFromIKEA(Item item) {
+    public static Item initItemFromIKEA(Item item) {
         String id = item.getPid();
         try {
             String buf = HtmlUtil.getHtmlContent("http://www.ikea.com/cn/zh/catalog/products/" + id + "?type=xml&dataset=normal,prices,allimages,parentCategories");
@@ -163,12 +170,15 @@ public class IkeaUtils {
 
                 count++;
             }
+            if (!buf.contains("<URL>")) {
+                return null;
+            }
             String info = XmlCatcher.getItem(buf);
             String[] infos = info.split("!!");
 
             item.name = infos[0];
             item.facts = infos[1];
-            item.setPrice( XmlCatcher.getPrice(buf));
+            item.setPrice(XmlCatcher.getPrice(buf));
             item.assembledSize = infos[8];
             item.designer = infos[4];
             item.environment = infos[5];
@@ -180,12 +190,13 @@ public class IkeaUtils {
             ItemUtils.savePicToLocal(item);
 
             System.out.println("initItemFromIKEA " + buf + " " + item.name + " " + item.price);
+            return item;
         } catch (IOException ie) {
-            System.err.println("initItemFromIKEA " + item.name + item.price);
+            return null;
         }
     }
 
-    public static void sortItemsByPrice(List<Item> items){
+    public static void sortItemsByPrice(List<Item> items) {
 
         for (int i = 0; i < items.size(); i++) {
             for (int j = i + 1; j < items.size(); j++) {
@@ -197,6 +208,7 @@ public class IkeaUtils {
             }
         }
     }
+
     public static int compare(Item arg0, Item arg1) {
         Item item1 = arg0;
         Item item2 = arg1;
@@ -210,17 +222,17 @@ public class IkeaUtils {
 
     public static void main(String[] args) {
         try {
-            FileInputStream fileInputStream=new FileInputStream(new File("/Users/Wk/Downloads/灯具.txt"));
-            InputStreamReader inputStreamReader=new InputStreamReader(fileInputStream);
-            BufferedReader bufferedReader=new BufferedReader(inputStreamReader);
+            FileInputStream fileInputStream = new FileInputStream(new File("/Users/Wk/Downloads/灯具.txt"));
+            InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream);
+            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
             String id;
-            while(!(id=bufferedReader.readLine()).isEmpty())
+            while (!(id = bufferedReader.readLine()).isEmpty())
                 IkeaUtils.grabProductFromIKEA(id);
         } catch (FileNotFoundException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         } catch (IOException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
-        IkeaUtils.grabProductFromIKEA("80179433");
+//        IkeaUtils.grabProductFromIKEA("80179433");
     }
 }
