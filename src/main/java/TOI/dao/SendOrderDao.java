@@ -66,6 +66,14 @@ public class SendOrderDao implements ParameterizedRowMapper<SendOrder> {
         }
         return null;
     }
+    public SendOrder getSendOrderById(int id) {
+        String sql = "select  * from  user_sendorder where id= ? ";
+        List<SendOrder> mediaUserScopeList = ikeaTemplate.query(sql, new Object[] { id }, this);
+        if (mediaUserScopeList != null && mediaUserScopeList.size() > 0) {
+            return mediaUserScopeList.get(0);
+        }
+        return null;
+    }
 
 	public int insert(final SendOrder trade) {
 		final String sql = "insert into user_sendorder (tid,pay_time,buyer_nick,receiver_name, receiver_state, receiver_city, receiver_address, receiver_mobile, receiver_phone,seller_flag,trade_memo,status) values (?,?,?,?,?,?,?,?,?,?,?,?)";
@@ -104,7 +112,7 @@ public class SendOrderDao implements ParameterizedRowMapper<SendOrder> {
 		return id > 0 ? id : 0;
 	}
 
-    public   List<SendOrder> searchSendOrder(int status, int expressId, String keyWord, String date){
+    public   List<SendOrder> searchSendOrder(int status, int expressId, String keyWord, String date,String endDate){
         String sql= "select * from user_sendorder ";
 
         StringBuilder whereProperty=new StringBuilder();
@@ -115,7 +123,7 @@ public class SendOrderDao implements ParameterizedRowMapper<SendOrder> {
             whereProperty.append(has?" and ":" ").append(" trade_memo like '%"+keyWord+"%' ");
             has=true;
         }
-        whereProperty.append(has?" and ":" ").append(" pay_time>'"+date +"' and pay_time<date_sub('"+date+"',interval -1 day)" );
+        whereProperty.append(has?" and ":" ").append(" pay_time>'"+date +"' and pay_time<'"+endDate+"'");
         if(StringUtils.isNotBlank(whereProperty.toString())){
             sql=sql+" where "+whereProperty.toString() ;
         }

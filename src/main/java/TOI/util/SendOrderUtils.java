@@ -34,8 +34,8 @@ senderOrder.setPayTime(trade.getPayTime());
     }
 
     public static void main(String[] args){
-        TaobaoUtils taobaoUtils=new TaobaoUtils("6102224bcf708272d219dbd6f0bf1f941834e157f6f5cec42635718");
-        List<Trade> tradeList= taobaoUtils.tradeFilter("2013-07-30 00:00:00","2013-08-10 00:00:00");
+        TaobaoUtils taobaoUtils=TaobaoUtils.getInstance("61006266a4038242d534ccc0691c296d25155e2851408d842635718");
+        List<Trade> tradeList= taobaoUtils.tradeFilter("2013-08-12 00:00:00","2013-08-15 00:00:00");
         for(Trade trade:tradeList)
         {
             DaoFactory.getSendOrderDao().insert(SendOrderUtils.generateSenderOrder(trade));

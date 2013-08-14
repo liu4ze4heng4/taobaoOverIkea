@@ -209,6 +209,6 @@ public class IkeaUtils {
     }
 
     public static void main(String[] args) {
-        IkeaUtils.grabProductFromIKEA("30160964");
+        IkeaUtils.grabProductFromIKEA("80179433");
     }
 }
