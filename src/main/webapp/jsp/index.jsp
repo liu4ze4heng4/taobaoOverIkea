@@ -106,8 +106,7 @@
              {
              	out.println("<table border='0' bgcolor='#FFF0E1' width='80%' height='150'>");
              	out.println("<tr align='center' height='80'><td>");
-             	out.println(session.getAttribute("userName")+"你好<br/>!!!");
-             	out.println("<a href='CartServlet?action=logout'>[注销]</a>");
+             	out.println("你好<br/>!!!");
              	out.println("</td></tr></table>");
              }
             %>

@@ -53,6 +53,12 @@ public class UserDao implements ParameterizedRowMapper<User> {
         return user;
     }
 
+    public User getUser(String name,String password){
+        String sql = "select  * from  user where name=?  and password=?";
+        User user = ikeaTemplate.queryForObject(sql, new Object[] { name,password }, this);
+        return user;
+    }
+
     public int updateUserByTbName(User user){
         String sql="update user set tb_token=? where tb_name=?";
         int result=ikeaTemplate.update(sql, new Object[] {user.getTbToken(),user.getTbName()});

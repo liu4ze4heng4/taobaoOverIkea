@@ -19,12 +19,12 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class SendOrderServlet extends HttpServlet {
+public class SendOrderServlet extends BaseServlet {
     private static String addItemPage = "/jsp/sendorder.jsp";
     private static String fahuoPage="/jsp/fahuo.jsp";
     SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void excute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         ServletContext context = getServletContext();
         request.setCharacterEncoding("UTF-8");
         String method = request.getParameter("method");
@@ -95,10 +95,6 @@ public class SendOrderServlet extends HttpServlet {
         return tradeItems;
 
 
-    }
-
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doPost(request, response);
     }
 
 }

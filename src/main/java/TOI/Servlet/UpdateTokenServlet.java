@@ -1,4 +1,4 @@
-package org.ikea;
+package TOI.Servlet;
 
 import java.io.IOException;
 

@@ -115,7 +115,7 @@ $(document).ready(function(){
 					
 					<div class="box box-info">Type anything to log in</div>
 
-					<form id="loginform" method="post" action="./login">
+					<form id="loginform" method="post" action="/IPS/user?method=login">
 
 						<p>
 							<label class="required" for="username">Username:</label><br/>
