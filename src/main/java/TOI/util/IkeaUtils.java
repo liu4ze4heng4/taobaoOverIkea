@@ -221,18 +221,18 @@ public class IkeaUtils {
     }
 
     public static void main(String[] args) {
-        try {
-            FileInputStream fileInputStream = new FileInputStream(new File("/Users/Wk/Downloads/灯具.txt"));
-            InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream);
-            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-            String id;
-            while (!(id = bufferedReader.readLine()).isEmpty())
-                IkeaUtils.grabProductFromIKEA(id);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (IOException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
-//        IkeaUtils.grabProductFromIKEA("80179433");
+//        try {
+//            FileInputStream fileInputStream = new FileInputStream(new File("/Users/Wk/Downloads/灯具.txt"));
+//            InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream);
+//            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+//            String id;
+//            while (!(id = bufferedReader.readLine()).isEmpty())
+//                IkeaUtils.grabProductFromIKEA(id);
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+//        } catch (IOException e) {
+//            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+//        }
+        IkeaUtils.grabProductFromIKEA("50171363");
     }
 }
